@@ -12,8 +12,10 @@
         .auth-card { width:100%; max-width:420px; padding:1rem; }
         .card { border-radius:1.25rem; box-shadow:0 25px 60px rgba(0,0,0,.4); border:0; }
         .card-header-custom { background:linear-gradient(135deg,#1e293b,#0f172a); padding:2rem; text-align:center; border-radius:1.25rem 1.25rem 0 0; }
-        .logo-box { width:64px;height:64px;background:linear-gradient(135deg,#6366f1,#4f46e5);border-radius:1rem;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;box-shadow:0 8px 24px rgba(99,102,241,.5); }
-        .logo-box i { font-size:1.8rem;color:#fff; }
+        .logo-box { width:78px;height:78px;background:linear-gradient(135deg,#6366f1,#4f46e5);border-radius:1rem;display:flex;align-items:center;justify-content:center;margin:0 auto 1rem;box-shadow:0 8px 24px rgba(99,102,241,.5);overflow:hidden; }
+        .logo-box.has-logo { background:#fff;padding:8px; }
+        .logo-box i { font-size:1.9rem;color:#fff; }
+        .logo-box img { width:100%;height:100%;object-fit:contain;border-radius:.6rem; }
         .card-header-custom h5 { color:#fff;font-weight:700;margin:0; }
         .card-header-custom p { color:#94a3b8;font-size:.82rem;margin:.3rem 0 0; }
         .form-label { font-weight:600;font-size:.85rem;color:#374151; }
@@ -25,10 +27,21 @@
 <body>
 <div class="auth-card">
     <div class="card">
+        @php
+            $empresaNome = \App\Models\Configuracao::get('empresa_nome', 'Sistema PDV');
+            $empresaLogo = \App\Models\Configuracao::get('empresa_logo');
+            $temLogo = $empresaLogo && \Illuminate\Support\Facades\Storage::disk('public')->exists($empresaLogo);
+        @endphp
         <div class="card-header-custom">
-            <div class="logo-box"><i class="ti ti-lock-open"></i></div>
-            <h5>Definir Nova Senha</h5>
-            <p>Escolha uma senha segura para sua conta</p>
+            <div class="logo-box {{ $temLogo ? 'has-logo' : '' }}">
+                @if($temLogo)
+                    <img src="{{ \Illuminate\Support\Facades\Storage::url($empresaLogo) }}" alt="Logo">
+                @else
+                    <i class="ti ti-lock-open"></i>
+                @endif
+            </div>
+            <h5>{{ $empresaNome }}</h5>
+            <p>Definir nova senha — escolha uma senha segura</p>
         </div>
         <div class="p-4">
             <form method="POST" action="{{ route('password.store') }}">

@@ -28,14 +28,16 @@
             text-align: center;
         }
         .logo-box {
-            width: 70px; height: 70px;
-            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            width: 84px; height: 84px;
+            background: linear-gradient(135deg, #6366f1, #4f46e5);
             border-radius: 1.1rem;
             display: flex; align-items: center; justify-content: center;
-            margin: 0 auto 1.2rem;
-            box-shadow: 0 8px 24px rgba(37,99,235,.5);
+            margin: 0 auto 1.2rem; overflow: hidden;
+            box-shadow: 0 8px 24px rgba(99,102,241,.45);
         }
-        .logo-box i { font-size: 2rem; color: #fff; }
+        .logo-box.has-logo { background: #fff; padding: 8px; }
+        .logo-box i { font-size: 2.2rem; color: #fff; }
+        .logo-box img { width: 100%; height: 100%; object-fit: contain; border-radius: .6rem; }
         .login-header h4 { color: #fff; font-weight: 700; margin: 0; letter-spacing: -.01em; }
         .login-header p { color: #94a3b8; font-size: .85rem; margin: .3rem 0 0; }
         .login-body { padding: 2rem; }
@@ -89,9 +91,9 @@
             $temLogo = $empresaLogo && \Illuminate\Support\Facades\Storage::disk('public')->exists($empresaLogo);
         @endphp
         <div class="login-header">
-            <div class="logo-box">
+            <div class="logo-box {{ $temLogo ? 'has-logo' : '' }}">
                 @if($temLogo)
-                    <img src="{{ \Illuminate\Support\Facades\Storage::url($empresaLogo) }}" alt="Logo" style="width:100%;height:100%;object-fit:cover;border-radius:1rem">
+                    <img src="{{ \Illuminate\Support\Facades\Storage::url($empresaLogo) }}" alt="Logo">
                 @else
                     <i class="ti ti-building-store"></i>
                 @endif

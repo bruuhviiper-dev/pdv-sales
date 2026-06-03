@@ -50,13 +50,15 @@
             flex-shrink: 0;
         }
         .brand-logo {
-            width: 36px; height: 36px; flex-shrink: 0;
+            width: 38px; height: 38px; flex-shrink: 0;
             background: linear-gradient(135deg, #6366f1, #4f46e5);
-            border-radius: .6rem;
+            border-radius: .6rem; overflow: hidden;
             display: flex; align-items: center; justify-content: center;
             box-shadow: 0 4px 12px rgba(99,102,241,.4);
         }
+        .brand-logo.has-logo { background: #fff; padding: 3px; }
         .brand-logo i { font-size: 1.2rem; color: #fff; }
+        .brand-logo img { width: 100%; height: 100%; object-fit: contain; border-radius: .4rem; }
         .brand-text { overflow: hidden; white-space: nowrap; }
         .brand-text .name {
             color: #f1f5f9; font-weight: 700; font-size: .9rem;
@@ -254,11 +256,14 @@
 <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeMobileSidebar()"></div>
 
 <aside class="sidebar" id="sidebar">
-    @php $empresaLogo = \App\Models\Configuracao::get('empresa_logo'); @endphp
+    @php
+        $empresaLogo = \App\Models\Configuracao::get('empresa_logo');
+        $temLogoSidebar = $empresaLogo && \Illuminate\Support\Facades\Storage::disk('public')->exists($empresaLogo);
+    @endphp
     <div class="sidebar-brand">
-        <div class="brand-logo">
-            @if($empresaLogo && \Illuminate\Support\Facades\Storage::disk('public')->exists($empresaLogo))
-                <img src="{{ \Illuminate\Support\Facades\Storage::url($empresaLogo) }}" alt="Logo" style="width:100%;height:100%;object-fit:cover;border-radius:.6rem">
+        <div class="brand-logo {{ $temLogoSidebar ? 'has-logo' : '' }}">
+            @if($temLogoSidebar)
+                <img src="{{ \Illuminate\Support\Facades\Storage::url($empresaLogo) }}" alt="Logo">
             @else
                 <i class="ti ti-building-store"></i>
             @endif
