@@ -16,7 +16,7 @@
         <div class="row g-3">
             <div class="col-md-3 text-center">
                 <div class="text-muted small">Saldo Abertura</div>
-                <div class="fw-bold fs-5">R$ {{ number_format($caixaAberto->saldo_abertura, 2, ',', '.') }}</div>
+                <div class="fw-bold fs-5">{{ moeda($caixaAberto->saldo_abertura) }}</div>
             </div>
             <div class="col-md-3 text-center">
                 <div class="text-muted small">Tempo Aberto</div>
@@ -51,7 +51,7 @@
                     <div class="flex-grow-1">
                         <label class="form-label small">Saldo inicial (troco em caixa)</label>
                         <div class="input-group">
-                            <span class="input-group-text">R$</span>
+                            <span class="input-group-text">{{ simbolo_moeda() }}</span>
                             <input type="number" name="saldo_abertura" class="form-control" value="0" min="0" step="0.01" required>
                         </div>
                     </div>
@@ -78,11 +78,11 @@
                     <td class="small">{{ $caixa->aberto_em->format('d/m/Y H:i') }}</td>
                     <td class="small">{{ $caixa->fechado_em ? $caixa->fechado_em->format('d/m/Y H:i') : '—' }}</td>
                     <td class="small">{{ $caixa->user->name }}</td>
-                    <td class="text-end small">R$ {{ number_format($caixa->saldo_abertura, 2, ',', '.') }}</td>
-                    <td class="text-end fw-semibold">R$ {{ number_format($caixa->total_vendas, 2, ',', '.') }}</td>
-                    <td class="text-end small">R$ {{ number_format($caixa->total_dinheiro, 2, ',', '.') }}</td>
-                    <td class="text-end small">R$ {{ number_format($caixa->total_pix, 2, ',', '.') }}</td>
-                    <td class="text-end small">R$ {{ number_format($caixa->total_cartao, 2, ',', '.') }}</td>
+                    <td class="text-end small">{{ moeda($caixa->saldo_abertura) }}</td>
+                    <td class="text-end fw-semibold">{{ moeda($caixa->total_vendas) }}</td>
+                    <td class="text-end small">{{ moeda($caixa->total_dinheiro) }}</td>
+                    <td class="text-end small">{{ moeda($caixa->total_pix) }}</td>
+                    <td class="text-end small">{{ moeda($caixa->total_cartao) }}</td>
                     <td class="text-center"><span class="badge {{ $caixa->status === 'aberto' ? 'bg-success' : 'bg-secondary' }}">{{ ucfirst($caixa->status) }}</span></td>
                     <td><a href="{{ route('caixa.relatorio', $caixa) }}" class="btn btn-sm btn-outline-primary"><i class="ti ti-file-text"></i></a></td>
                 </tr>

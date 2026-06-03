@@ -64,19 +64,21 @@
         }
         .brand-text .sub { color: #64748b; font-size: .7rem; }
 
-        /* Toggle button */
+        /* Toggle button — fica FORA da sidebar (fixed) para não ser cortado pelo overflow */
         .sidebar-toggle {
-            position: absolute; top: 14px; right: -12px;
-            width: 24px; height: 24px; border-radius: 50%;
-            background: #6366f1; border: 2px solid var(--sidebar-bg);
+            position: fixed; top: 16px;
+            left: calc(var(--sidebar-w) - 13px);
+            width: 26px; height: 26px; border-radius: 50%;
+            background: #6366f1; border: 2px solid #fff;
             color: #fff; cursor: pointer;
             display: flex; align-items: center; justify-content: center;
-            font-size: .65rem; z-index: 10;
-            transition: transform var(--transition), background .2s;
-            box-shadow: 0 2px 8px rgba(0,0,0,.3);
+            font-size: .7rem; z-index: 1100;
+            transition: left var(--transition), transform var(--transition), background .2s;
+            box-shadow: 0 2px 10px rgba(0,0,0,.25);
         }
         .sidebar-toggle:hover { background: #4f46e5; }
-        .sidebar.collapsed .sidebar-toggle { transform: rotate(180deg); }
+        .sidebar.collapsed ~ .sidebar-toggle { left: calc(var(--sidebar-collapsed-w) - 13px); }
+        .sidebar.collapsed ~ .sidebar-toggle i { transform: rotate(180deg); }
 
         /* Scroll area */
         .sidebar-scroll {
@@ -251,16 +253,20 @@
 <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeMobileSidebar()"></div>
 
 <aside class="sidebar" id="sidebar">
+    @php $empresaLogo = \App\Models\Configuracao::get('empresa_logo'); @endphp
     <div class="sidebar-brand">
-        <div class="brand-logo"><i class="ti ti-building-store"></i></div>
+        <div class="brand-logo">
+            @if($empresaLogo && \Illuminate\Support\Facades\Storage::disk('public')->exists($empresaLogo))
+                <img src="{{ \Illuminate\Support\Facades\Storage::url($empresaLogo) }}" alt="Logo" style="width:100%;height:100%;object-fit:cover;border-radius:.6rem">
+            @else
+                <i class="ti ti-building-store"></i>
+            @endif
+        </div>
         <div class="brand-text">
             <span class="name">{{ \App\Models\Configuracao::get('empresa_nome', 'Sistema PDV') }}</span>
             <span class="sub">Gestão Comercial</span>
         </div>
     </div>
-    <button class="sidebar-toggle" id="sidebarToggle" title="Retrair menu">
-        <i class="ti ti-chevron-left"></i>
-    </button>
 
     <div class="sidebar-scroll">
 
@@ -415,6 +421,10 @@
         </a>
     </div>
 </aside>
+
+<button class="sidebar-toggle" id="sidebarToggle" title="Retrair / expandir menu">
+    <i class="ti ti-chevron-left"></i>
+</button>
 
 <div class="main-wrap" id="mainWrap">
     <div class="topbar">

@@ -21,10 +21,10 @@
 </div>
 
 <div class="row g-3 mb-4">
-    <div class="col-md-3"><div class="card text-center border-0 bg-success bg-opacity-10"><div class="card-body"><div class="fw-bold fs-5 text-success">R$ {{ number_format($vendas->sum('total'), 2, ',', '.') }}</div><div class="small text-muted">Total Vendido</div></div></div></div>
+    <div class="col-md-3"><div class="card text-center border-0 bg-success bg-opacity-10"><div class="card-body"><div class="fw-bold fs-5 text-success">{{ moeda($vendas->sum('total')) }}</div><div class="small text-muted">Total Vendido</div></div></div></div>
     <div class="col-md-3"><div class="card text-center border-0 bg-primary bg-opacity-10"><div class="card-body"><div class="fw-bold fs-5 text-primary">{{ $vendas->count() }}</div><div class="small text-muted">Total de Vendas</div></div></div></div>
     <div class="col-md-3"><div class="card text-center border-0 bg-info bg-opacity-10"><div class="card-body"><div class="fw-bold fs-5 text-info">R$ {{ $vendas->count() > 0 ? number_format($vendas->sum('total') / $vendas->count(), 2, ',', '.') : '0,00' }}</div><div class="small text-muted">Ticket Médio</div></div></div></div>
-    <div class="col-md-3"><div class="card text-center border-0 bg-warning bg-opacity-10"><div class="card-body"><div class="fw-bold fs-5 text-warning">R$ {{ number_format($vendas->sum('desconto'), 2, ',', '.') }}</div><div class="small text-muted">Total Descontos</div></div></div></div>
+    <div class="col-md-3"><div class="card text-center border-0 bg-warning bg-opacity-10"><div class="card-body"><div class="fw-bold fs-5 text-warning">{{ moeda($vendas->sum('desconto')) }}</div><div class="small text-muted">Total Descontos</div></div></div></div>
 </div>
 
 <div class="row g-3 mb-4">
@@ -36,7 +36,7 @@
                 <div class="d-flex justify-content-between align-items-center px-3 py-2 border-bottom">
                     <span>{{ ['dinheiro' => 'Dinheiro', 'pix' => 'PIX', 'cartao_debito' => 'Débito', 'cartao_credito' => 'Crédito', 'fiado' => 'Fiado'][$forma] ?? ucfirst($forma) }}</span>
                     <div class="text-end">
-                        <div class="fw-bold">R$ {{ number_format($dados['total'], 2, ',', '.') }}</div>
+                        <div class="fw-bold">{{ moeda($dados['total']) }}</div>
                         <div class="text-muted small">{{ $dados['quantidade'] }} vendas</div>
                     </div>
                 </div>
@@ -64,7 +64,7 @@
                     <td class="small">{{ $venda->cliente?->nome ?? 'Consumidor Final' }}</td>
                     <td class="small">{{ $venda->user->name }}</td>
                     <td><span class="badge bg-secondary small">{{ $venda->formaPagamentoLabel() }}</span></td>
-                    <td class="text-end fw-semibold">R$ {{ number_format($venda->total, 2, ',', '.') }}</td>
+                    <td class="text-end fw-semibold">{{ moeda($venda->total) }}</td>
                 </tr>
                 @endforeach
             </tbody>

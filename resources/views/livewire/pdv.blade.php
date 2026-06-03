@@ -16,9 +16,9 @@
         <div>
             <i class="ti ti-check-circle-fill me-2 fs-5"></i>
             <strong>Venda {{ $ultimaVenda['numero'] }} concluída!</strong>
-            &nbsp; Total: <strong>R$ {{ number_format($ultimaVenda['total'], 2, ',', '.') }}</strong>
+            &nbsp; Total: <strong>{{ moeda($ultimaVenda['total']) }}</strong>
             @if($ultimaVenda['troco'] > 0)
-            &nbsp;— Troco: <strong class="text-success">R$ {{ number_format($ultimaVenda['troco'], 2, ',', '.') }}</strong>
+            &nbsp;— Troco: <strong class="text-success">{{ moeda($ultimaVenda['troco']) }}</strong>
             @endif
             &nbsp;| Pgto: {{ $ultimaVenda['forma_pagamento'] }}
         </div>
@@ -48,6 +48,7 @@
                     <div class="list-group mt-2 shadow">
                         @foreach($produtosFiltrados as $p)
                         <button
+                            wire:key="sug-{{ $p['id'] }}"
                             wire:click="adicionarProduto({{ $p['id'] }})"
                             type="button"
                             class="list-group-item list-group-item-action d-flex justify-content-between align-items-center py-2"
@@ -59,7 +60,7 @@
                                     Estoque: {{ $p['estoque_atual'] }} {{ $p['unidade'] }}
                                 </div>
                             </div>
-                            <span class="badge bg-primary fs-6">R$ {{ number_format($p['preco_venda'], 2, ',', '.') }}</span>
+                            <span class="badge bg-primary fs-6">{{ moeda($p['preco_venda']) }}</span>
                         </button>
                         @endforeach
                     </div>
@@ -79,11 +80,11 @@
                 </div>
                 <div class="card-body p-0">
                     @forelse($carrinho as $key => $item)
-                    <div class="d-flex align-items-center gap-2 px-3 py-2 border-bottom">
+                    <div wire:key="cart-{{ $key }}" class="d-flex align-items-center gap-2 px-3 py-2 border-bottom">
                         <div class="flex-grow-1">
                             <div class="fw-semibold small">{{ $item['nome'] }}</div>
                             <div class="text-muted" style="font-size:.75rem">
-                                R$ {{ number_format($item['preco'], 2, ',', '.') }} / {{ $item['unidade'] }}
+                                {{ moeda($item['preco']) }} / {{ $item['unidade'] }}
                             </div>
                         </div>
                         <div class="d-flex align-items-center gap-1">
@@ -94,7 +95,7 @@
                                 type="button" class="btn btn-sm btn-outline-secondary px-2 py-0 lh-1">+</button>
                         </div>
                         <div class="text-end" style="min-width:90px">
-                            <div class="fw-bold text-primary">R$ {{ number_format($item['subtotal'], 2, ',', '.') }}</div>
+                            <div class="fw-bold text-primary">{{ moeda($item['subtotal']) }}</div>
                         </div>
                         <button wire:click="removerItem('{{ $key }}')" type="button"
                             class="btn btn-sm btn-outline-danger px-2 py-1">
@@ -131,19 +132,19 @@
                     <div class="bg-light rounded p-3 mb-3">
                         <div class="d-flex justify-content-between mb-1 small">
                             <span class="text-muted">Subtotal</span>
-                            <span>R$ {{ number_format($this->subtotal, 2, ',', '.') }}</span>
+                            <span>{{ moeda($this->subtotal) }}</span>
                         </div>
                         <div class="d-flex justify-content-between align-items-center mb-1">
-                            <span class="text-muted small">Desconto (R$)</span>
+                            <span class="text-muted small">Desconto ({{ simbolo_moeda() }})</span>
                             <div class="input-group input-group-sm" style="width:120px">
-                                <span class="input-group-text">R$</span>
+                                <span class="input-group-text">{{ simbolo_moeda() }}</span>
                                 <input type="number" wire:model.live="desconto" class="form-control" min="0" step="0.01" max="{{ $this->subtotal }}">
                             </div>
                         </div>
                         <hr class="my-2">
                         <div class="d-flex justify-content-between fw-bold fs-5">
                             <span>TOTAL</span>
-                            <span class="text-primary">R$ {{ number_format($this->total, 2, ',', '.') }}</span>
+                            <span class="text-primary">{{ moeda($this->total) }}</span>
                         </div>
                     </div>
 
@@ -157,7 +158,7 @@
                                 'cartao_credito' => ['Crédito',   'bi-credit-card-2-front'],
                                 'fiado'          => ['Fiado',     'bi-person-check'],
                             ] as $val => [$label, $icon])
-                            <div class="col-4">
+                            <div class="col-4" wire:key="pg-{{ $val }}">
                                 <div
                                     wire:click="$set('formaPagamento', '{{ $val }}')"
                                     class="border rounded p-2 text-center small {{ $formaPagamento === $val ? 'border-primary bg-primary bg-opacity-10 fw-semibold' : 'bg-white' }}"
@@ -175,12 +176,12 @@
                     <div class="mb-3">
                         <label class="form-label small fw-semibold">Valor Recebido</label>
                         <div class="input-group">
-                            <span class="input-group-text fw-bold">R$</span>
+                            <span class="input-group-text fw-bold">{{ simbolo_moeda() }}</span>
                             <input type="number" wire:model.live="valorPago" class="form-control form-control-lg" min="0" step="0.01">
                         </div>
                         @if($this->troco > 0)
                         <div class="alert alert-info py-2 mt-2 mb-0 fw-bold text-center">
-                            <i class="ti ti-coin me-2"></i>Troco: R$ {{ number_format($this->troco, 2, ',', '.') }}
+                            <i class="ti ti-coin me-2"></i>Troco: {{ moeda($this->troco) }}
                         </div>
                         @endif
                     </div>
@@ -218,7 +219,7 @@
                     @if(!empty($carrinho))
                     <div class="text-center mt-2 text-muted small">
                         {{ count($carrinho) }} produto(s) &nbsp;|&nbsp;
-                        Total: R$ {{ number_format($this->total, 2, ',', '.') }}
+                        Total: {{ moeda($this->total) }}
                     </div>
                     @endif
                 </div>
@@ -227,12 +228,10 @@
     </div>
 </div>
 
-@push('scripts')
+@script
 <script>
-document.addEventListener('livewire:init', () => {
-    Livewire.on('alerta', ({ mensagem }) => {
+    $wire.on('alerta', ({ mensagem }) => {
         alert(mensagem);
     });
-});
 </script>
-@endpush
+@endscript

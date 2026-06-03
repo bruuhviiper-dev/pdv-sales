@@ -13,13 +13,13 @@
 <div class="row g-3 mb-4">
     <div class="col-md-4">
         <div class="card border-0 bg-primary bg-opacity-10"><div class="card-body text-center">
-            <div class="fw-bold fs-4 text-primary">R$ {{ number_format(collect($produtos)->sum('valor_estoque'), 2, ',', '.') }}</div>
+            <div class="fw-bold fs-4 text-primary">{{ moeda(collect($produtos)->sum('valor_estoque')) }}</div>
             <div class="small text-muted">Valor a Custo (total estoque)</div>
         </div></div>
     </div>
     <div class="col-md-4">
         <div class="card border-0 bg-success bg-opacity-10"><div class="card-body text-center">
-            <div class="fw-bold fs-4 text-success">R$ {{ number_format(collect($produtos)->sum('valor_venda'), 2, ',', '.') }}</div>
+            <div class="fw-bold fs-4 text-success">{{ moeda(collect($produtos)->sum('valor_venda')) }}</div>
             <div class="small text-muted">Valor a Venda (potencial)</div>
         </div></div>
     </div>
@@ -44,9 +44,9 @@
                     <td class="small text-muted">{{ $item['produto']->categoria?->nome ?? '—' }}</td>
                     <td class="text-center">{{ $item['produto']->estoque_atual }} {{ $item['produto']->unidade }}</td>
                     <td class="text-center text-muted">{{ $item['produto']->estoque_minimo }}</td>
-                    <td class="text-end small">R$ {{ number_format($item['produto']->preco_custo, 2, ',', '.') }}</td>
-                    <td class="text-end fw-semibold">R$ {{ number_format($item['valor_estoque'], 2, ',', '.') }}</td>
-                    <td class="text-end text-success">R$ {{ number_format($item['valor_venda'], 2, ',', '.') }}</td>
+                    <td class="text-end small">{{ moeda($item['produto']->preco_custo) }}</td>
+                    <td class="text-end fw-semibold">{{ moeda($item['valor_estoque']) }}</td>
+                    <td class="text-end text-success">{{ moeda($item['valor_venda']) }}</td>
                     <td class="text-center">
                         @if($item['produto']->estoque_atual == 0)<span class="badge bg-danger">Zerado</span>
                         @elseif($item['critico'])<span class="badge bg-warning text-dark">Crítico</span>

@@ -82,12 +82,21 @@
 <body>
 <div class="login-container">
     <div class="login-card">
+        @php
+            $empresaNome = \App\Models\Configuracao::get('empresa_nome', 'Sistema PDV');
+            $empresaLogo = \App\Models\Configuracao::get('empresa_logo');
+            $temLogo = $empresaLogo && \Illuminate\Support\Facades\Storage::disk('public')->exists($empresaLogo);
+        @endphp
         <div class="login-header">
             <div class="logo-box">
-                <i class="ti ti-building-store"></i>
+                @if($temLogo)
+                    <img src="{{ \Illuminate\Support\Facades\Storage::url($empresaLogo) }}" alt="Logo" style="width:100%;height:100%;object-fit:cover;border-radius:1rem">
+                @else
+                    <i class="ti ti-building-store"></i>
+                @endif
             </div>
-            <h4>Sistema PDV</h4>
-            <p>Gestão Comercial Completa</p>
+            <h4>{{ $empresaNome }}</h4>
+            <p>Sistema de Gestão Comercial</p>
         </div>
 
         <div class="login-body">

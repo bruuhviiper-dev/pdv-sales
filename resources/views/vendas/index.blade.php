@@ -12,7 +12,7 @@
     <div class="col-md-4">
         <div class="card border-0 bg-success bg-opacity-10">
             <div class="card-body text-center">
-                <div class="text-success fw-bold fs-4">R$ {{ number_format($totais->total_vendas, 2, ',', '.') }}</div>
+                <div class="text-success fw-bold fs-4">{{ moeda($totais->total_vendas) }}</div>
                 <div class="text-muted small">Total do Período</div>
             </div>
         </div>
@@ -81,7 +81,7 @@
                         <span class="badge bg-secondary">{{ $venda->formaPagamentoLabel() }}</span>
                     </td>
                     <td class="text-center">{{ $venda->itens->count() }}</td>
-                    <td class="text-end fw-bold">R$ {{ number_format($venda->total, 2, ',', '.') }}</td>
+                    <td class="text-end fw-bold">{{ moeda($venda->total) }}</td>
                     <td class="text-center">
                         <span class="badge {{ $venda->status === 'concluida' ? 'bg-success' : 'bg-danger' }}">
                             {{ ucfirst($venda->status) }}

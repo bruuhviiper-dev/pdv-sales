@@ -34,11 +34,11 @@
                     <span class="text-muted">Cidade</span><span>{{ $cliente->cidade ? $cliente->cidade.'/'.$cliente->estado : '—' }}</span>
                 </div>
                 <div class="d-flex justify-content-between py-2 border-bottom">
-                    <span class="text-muted">Limite Fiado</span><span>R$ {{ number_format($cliente->limite_fiado, 2, ',', '.') }}</span>
+                    <span class="text-muted">Limite Fiado</span><span>{{ moeda($cliente->limite_fiado) }}</span>
                 </div>
                 <div class="d-flex justify-content-between py-2">
                     <span class="text-muted">Saldo Fiado</span>
-                    <span class="{{ $cliente->saldo_fiado > 0 ? 'text-danger fw-bold' : 'text-success' }}">R$ {{ number_format($cliente->saldo_fiado, 2, ',', '.') }}</span>
+                    <span class="{{ $cliente->saldo_fiado > 0 ? 'text-danger fw-bold' : 'text-success' }}">{{ moeda($cliente->saldo_fiado) }}</span>
                 </div>
             </div>
         </div>
@@ -58,7 +58,7 @@
                             <td><a href="{{ route('vendas.show', $venda) }}">{{ $venda->numero_venda }}</a></td>
                             <td>{{ $venda->itens->count() }}</td>
                             <td>{{ $venda->formaPagamentoLabel() }}</td>
-                            <td class="text-end fw-semibold">R$ {{ number_format($venda->total, 2, ',', '.') }}</td>
+                            <td class="text-end fw-semibold">{{ moeda($venda->total) }}</td>
                             <td><span class="badge {{ $venda->status === 'concluida' ? 'bg-success' : 'bg-danger' }}">{{ ucfirst($venda->status) }}</span></td>
                         </tr>
                         @empty

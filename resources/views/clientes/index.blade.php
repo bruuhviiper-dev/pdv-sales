@@ -35,7 +35,7 @@
                     <td class="small">{{ $cliente->telefone ?? '—' }}</td>
                     <td class="small">{{ $cliente->cidade ? $cliente->cidade.'/'.$cliente->estado : '—' }}</td>
                     <td class="text-end {{ $cliente->saldo_fiado > 0 ? 'text-danger fw-bold' : 'text-muted' }}">
-                        R$ {{ number_format($cliente->saldo_fiado, 2, ',', '.') }}
+                        {{ moeda($cliente->saldo_fiado) }}
                     </td>
                     <td class="text-center"><span class="badge {{ $cliente->ativo ? 'bg-success' : 'bg-secondary' }}">{{ $cliente->ativo ? 'Ativo' : 'Inativo' }}</span></td>
                     <td class="text-center">

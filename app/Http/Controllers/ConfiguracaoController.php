@@ -19,7 +19,11 @@ class ConfiguracaoController extends Controller
 
     public function salvar(Request $request)
     {
-        $campos = ['empresa_nome', 'empresa_cnpj', 'empresa_telefone', 'empresa_endereco', 'empresa_cidade', 'empresa_estado'];
+        $campos = [
+            'empresa_nome', 'empresa_cnpj', 'empresa_telefone', 'empresa_email',
+            'empresa_endereco', 'empresa_cidade', 'empresa_estado', 'empresa_cep',
+            'moeda_simbolo', 'recibo_rodape',
+        ];
 
         foreach ($campos as $campo) {
             if ($request->has($campo)) {
@@ -28,12 +32,31 @@ class ConfiguracaoController extends Controller
         }
 
         if ($request->hasFile('empresa_logo')) {
-            $request->validate(['empresa_logo' => 'image|max:1024']);
+            $request->validate(['empresa_logo' => 'image|max:1024'], [
+                'empresa_logo.image' => 'O arquivo deve ser uma imagem (JPG, PNG).',
+                'empresa_logo.max'   => 'A logo deve ter no máximo 1MB.',
+            ]);
+            // remove logo antiga
+            $antiga = Configuracao::get('empresa_logo');
+            if ($antiga && Storage::disk('public')->exists($antiga)) {
+                Storage::disk('public')->delete($antiga);
+            }
             $logo = $request->file('empresa_logo')->store('configuracoes', 'public');
             Configuracao::set('empresa_logo', $logo);
         }
 
         return redirect()->route('configuracoes.index')->with('success', 'Configurações salvas com sucesso!');
+    }
+
+    public function removerLogo()
+    {
+        $logo = Configuracao::get('empresa_logo');
+        if ($logo && Storage::disk('public')->exists($logo)) {
+            Storage::disk('public')->delete($logo);
+        }
+        Configuracao::set('empresa_logo', null);
+
+        return redirect()->route('configuracoes.index')->with('success', 'Logo removida com sucesso!');
     }
 
     public function usuarios()

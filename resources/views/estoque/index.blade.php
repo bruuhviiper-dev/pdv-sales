@@ -53,7 +53,7 @@
                         </span>
                     </td>
                     <td class="text-center">{{ $produto->estoque_minimo }} {{ $produto->unidade }}</td>
-                    <td class="text-end small">R$ {{ number_format($produto->estoque_atual * $produto->preco_custo, 2, ',', '.') }}</td>
+                    <td class="text-end small">{{ moeda($produto->estoque_atual * $produto->preco_custo) }}</td>
                     <td class="text-center">
                         @if($produto->estoque_atual == 0)
                             <span class="badge bg-danger">Zerado</span>

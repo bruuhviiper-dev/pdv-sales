@@ -14,7 +14,7 @@
                 <div class="icon bg-primary bg-opacity-10 text-primary"><i class="ti ti-currency-dollar"></i></div>
                 <div>
                     <div class="text-muted small">Receita Hoje</div>
-                    <div class="fw-bold fs-5">R$ {{ number_format($receitaHoje, 2, ',', '.') }}</div>
+                    <div class="fw-bold fs-5">{{ moeda($receitaHoje) }}</div>
                 </div>
             </div>
         </div>
@@ -36,7 +36,7 @@
                 <div class="icon bg-info bg-opacity-10 text-info"><i class="ti ti-trending-up"></i></div>
                 <div>
                     <div class="text-muted small">Receita do Mês</div>
-                    <div class="fw-bold fs-5">R$ {{ number_format($receitaMes, 2, ',', '.') }}</div>
+                    <div class="fw-bold fs-5">{{ moeda($receitaMes) }}</div>
                 </div>
             </div>
         </div>
@@ -77,7 +77,7 @@
                                 <div class="text-muted" style="font-size:.75rem">{{ $prod->total_vendido }} un.</div>
                             </div>
                         </div>
-                        <span class="text-success fw-semibold small">R$ {{ number_format($prod->total_receita, 2, ',', '.') }}</span>
+                        <span class="text-success fw-semibold small">{{ moeda($prod->total_receita) }}</span>
                     </div>
                     @empty
                     <div class="list-group-item text-muted text-center py-4">Nenhuma venda no período</div>
@@ -128,7 +128,7 @@
                         <div class="fw-semibold small">{{ $conta->descricao }}</div>
                         <div class="text-muted" style="font-size:.75rem">Vence: {{ \Carbon\Carbon::parse($conta->vencimento)->format('d/m/Y') }}</div>
                     </div>
-                    <span class="text-danger fw-bold small">R$ {{ number_format($conta->valor, 2, ',', '.') }}</span>
+                    <span class="text-danger fw-bold small">{{ moeda($conta->valor) }}</span>
                 </div>
                 @empty
                 <div class="text-success text-center py-4">

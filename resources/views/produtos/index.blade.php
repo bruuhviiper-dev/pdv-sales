@@ -75,8 +75,8 @@
                         @else<span class="text-muted">—</span>@endif
                     </td>
                     <td><span class="font-monospace small">{{ $produto->codigo_barras ?? '—' }}</span></td>
-                    <td class="text-end">R$ {{ number_format($produto->preco_custo, 2, ',', '.') }}</td>
-                    <td class="text-end fw-semibold">R$ {{ number_format($produto->preco_venda, 2, ',', '.') }}</td>
+                    <td class="text-end">{{ moeda($produto->preco_custo) }}</td>
+                    <td class="text-end fw-semibold">{{ moeda($produto->preco_venda) }}</td>
                     <td class="text-end {{ $produto->margem_lucro >= 30 ? 'text-success' : ($produto->margem_lucro >= 10 ? 'text-warning' : 'text-danger') }}">
                         {{ $produto->margem_lucro }}%
                     </td>

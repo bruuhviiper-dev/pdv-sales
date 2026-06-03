@@ -27,7 +27,7 @@
                     <td class="fw-semibold">{{ $c->nome }}</td>
                     <td class="small text-muted">{{ $c->telefone ?? '—' }}</td>
                     <td class="text-center">{{ $c->total_compras }}</td>
-                    <td class="text-end fw-bold text-success">R$ {{ number_format($c->total_gasto, 2, ',', '.') }}</td>
+                    <td class="text-end fw-bold text-success">{{ moeda($c->total_gasto) }}</td>
                     <td class="text-end small">R$ {{ $c->total_compras > 0 ? number_format($c->total_gasto / $c->total_compras, 2, ',', '.') : '0,00' }}</td>
                 </tr>
                 @empty

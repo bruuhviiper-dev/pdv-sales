@@ -21,14 +21,14 @@
                 <div class="d-flex justify-content-between py-2 border-bottom"><span class="text-muted">Abertura</span><span>{{ $caixa->aberto_em->format('d/m/Y H:i') }}</span></div>
                 <div class="d-flex justify-content-between py-2 border-bottom"><span class="text-muted">Fechamento</span><span>{{ $caixa->fechado_em ? $caixa->fechado_em->format('d/m/Y H:i') : 'Aberto' }}</span></div>
                 <div class="d-flex justify-content-between py-2 border-bottom"><span class="text-muted">Operador</span><span>{{ $caixa->user->name }}</span></div>
-                <div class="d-flex justify-content-between py-2 border-bottom"><span class="text-muted">Saldo Abertura</span><span>R$ {{ number_format($caixa->saldo_abertura, 2, ',', '.') }}</span></div>
-                <div class="d-flex justify-content-between py-2 border-bottom"><span class="text-muted">Total de Vendas</span><span class="fw-bold text-success">R$ {{ number_format($caixa->total_vendas, 2, ',', '.') }}</span></div>
-                <div class="d-flex justify-content-between py-2 border-bottom"><span class="text-muted">Dinheiro</span><span>R$ {{ number_format($caixa->total_dinheiro, 2, ',', '.') }}</span></div>
-                <div class="d-flex justify-content-between py-2 border-bottom"><span class="text-muted">PIX</span><span>R$ {{ number_format($caixa->total_pix, 2, ',', '.') }}</span></div>
-                <div class="d-flex justify-content-between py-2 border-bottom"><span class="text-muted">Cartão</span><span>R$ {{ number_format($caixa->total_cartao, 2, ',', '.') }}</span></div>
-                <div class="d-flex justify-content-between py-2 border-bottom"><span class="text-muted">Fiado</span><span>R$ {{ number_format($caixa->total_fiado, 2, ',', '.') }}</span></div>
+                <div class="d-flex justify-content-between py-2 border-bottom"><span class="text-muted">Saldo Abertura</span><span>{{ moeda($caixa->saldo_abertura) }}</span></div>
+                <div class="d-flex justify-content-between py-2 border-bottom"><span class="text-muted">Total de Vendas</span><span class="fw-bold text-success">{{ moeda($caixa->total_vendas) }}</span></div>
+                <div class="d-flex justify-content-between py-2 border-bottom"><span class="text-muted">Dinheiro</span><span>{{ moeda($caixa->total_dinheiro) }}</span></div>
+                <div class="d-flex justify-content-between py-2 border-bottom"><span class="text-muted">PIX</span><span>{{ moeda($caixa->total_pix) }}</span></div>
+                <div class="d-flex justify-content-between py-2 border-bottom"><span class="text-muted">Cartão</span><span>{{ moeda($caixa->total_cartao) }}</span></div>
+                <div class="d-flex justify-content-between py-2 border-bottom"><span class="text-muted">Fiado</span><span>{{ moeda($caixa->total_fiado) }}</span></div>
                 @if($caixa->saldo_fechamento)
-                <div class="d-flex justify-content-between py-2 fw-bold fs-5"><span>Saldo Final</span><span class="text-primary">R$ {{ number_format($caixa->saldo_fechamento, 2, ',', '.') }}</span></div>
+                <div class="d-flex justify-content-between py-2 fw-bold fs-5"><span>Saldo Final</span><span class="text-primary">{{ moeda($caixa->saldo_fechamento) }}</span></div>
                 @endif
             </div>
         </div>
@@ -56,7 +56,7 @@
                     <td class="small">{{ $venda->cliente?->nome ?? 'Cons. Final' }}</td>
                     <td class="text-center">{{ $venda->itens->count() }}</td>
                     <td><span class="badge bg-secondary small">{{ $venda->formaPagamentoLabel() }}</span></td>
-                    <td class="text-end fw-semibold">R$ {{ number_format($venda->total, 2, ',', '.') }}</td>
+                    <td class="text-end fw-semibold">{{ moeda($venda->total) }}</td>
                 </tr>
                 @endforeach
             </tbody>

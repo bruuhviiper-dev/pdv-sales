@@ -11,7 +11,7 @@
     <div class="col-md-4">
         <div class="card border-0 bg-danger bg-opacity-10">
             <div class="card-body text-center">
-                <div class="text-danger fw-bold fs-4">R$ {{ number_format($totalPagar, 2, ',', '.') }}</div>
+                <div class="text-danger fw-bold fs-4">{{ moeda($totalPagar) }}</div>
                 <div class="text-muted small">A Pagar (pendente)</div>
             </div>
         </div>
@@ -19,7 +19,7 @@
     <div class="col-md-4">
         <div class="card border-0 bg-success bg-opacity-10">
             <div class="card-body text-center">
-                <div class="text-success fw-bold fs-4">R$ {{ number_format($totalReceber, 2, ',', '.') }}</div>
+                <div class="text-success fw-bold fs-4">{{ moeda($totalReceber) }}</div>
                 <div class="text-muted small">A Receber (pendente)</div>
             </div>
         </div>
@@ -72,7 +72,7 @@
                     <td class="small text-muted">{{ $conta->fornecedor_cliente ?? '—' }}</td>
                     <td><span class="badge {{ $conta->tipo === 'pagar' ? 'bg-danger' : 'bg-success' }}">{{ $conta->tipo === 'pagar' ? 'A Pagar' : 'A Receber' }}</span></td>
                     <td class="small {{ $conta->isVencida() ? 'text-danger fw-bold' : '' }}">{{ \Carbon\Carbon::parse($conta->vencimento)->format('d/m/Y') }}</td>
-                    <td class="text-end fw-bold">R$ {{ number_format($conta->valor, 2, ',', '.') }}</td>
+                    <td class="text-end fw-bold">{{ moeda($conta->valor) }}</td>
                     <td><span class="badge {{ ['pendente' => 'bg-warning text-dark', 'pago' => 'bg-success', 'vencido' => 'bg-danger', 'cancelado' => 'bg-secondary'][$conta->status] }}">{{ ucfirst($conta->status) }}</span></td>
                     <td class="text-center">
                         <div class="btn-group btn-group-sm">

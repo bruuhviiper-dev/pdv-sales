@@ -40,23 +40,23 @@
                 </div>
                 @endif
                 <div class="d-flex justify-content-between py-2 border-bottom">
-                    <span class="text-muted">Valor Pago</span><span>R$ {{ number_format($venda->valor_pago, 2, ',', '.') }}</span>
+                    <span class="text-muted">Valor Pago</span><span>{{ moeda($venda->valor_pago) }}</span>
                 </div>
                 @if($venda->troco > 0)
                 <div class="d-flex justify-content-between py-2 border-bottom">
-                    <span class="text-muted">Troco</span><span class="text-success fw-bold">R$ {{ number_format($venda->troco, 2, ',', '.') }}</span>
+                    <span class="text-muted">Troco</span><span class="text-success fw-bold">{{ moeda($venda->troco) }}</span>
                 </div>
                 @endif
                 <div class="d-flex justify-content-between py-2 border-bottom">
-                    <span class="text-muted">Subtotal</span><span>R$ {{ number_format($venda->subtotal, 2, ',', '.') }}</span>
+                    <span class="text-muted">Subtotal</span><span>{{ moeda($venda->subtotal) }}</span>
                 </div>
                 @if($venda->desconto > 0)
                 <div class="d-flex justify-content-between py-2 border-bottom">
-                    <span class="text-muted">Desconto</span><span class="text-danger">- R$ {{ number_format($venda->desconto, 2, ',', '.') }}</span>
+                    <span class="text-muted">Desconto</span><span class="text-danger">- {{ moeda($venda->desconto) }}</span>
                 </div>
                 @endif
                 <div class="d-flex justify-content-between py-2 fw-bold fs-5">
-                    <span>TOTAL</span><span class="text-primary">R$ {{ number_format($venda->total, 2, ',', '.') }}</span>
+                    <span>TOTAL</span><span class="text-primary">{{ moeda($venda->total) }}</span>
                 </div>
             </div>
         </div>
@@ -74,10 +74,10 @@
                         <tr>
                             <td>{{ $item->produto_nome }}</td>
                             <td class="text-center">{{ $item->quantidade }}</td>
-                            <td class="text-end">R$ {{ number_format($item->preco_unitario, 2, ',', '.') }}</td>
-                            <td class="text-end fw-semibold">R$ {{ number_format($item->subtotal, 2, ',', '.') }}</td>
+                            <td class="text-end">{{ moeda($item->preco_unitario) }}</td>
+                            <td class="text-end fw-semibold">{{ moeda($item->subtotal) }}</td>
                             <td class="text-end text-success small">
-                                R$ {{ number_format($item->subtotal - ($item->quantidade * $item->preco_custo), 2, ',', '.') }}
+                                {{ moeda($item->subtotal - ($item->quantidade * $item->preco_custo)) }}
                             </td>
                         </tr>
                         @endforeach
@@ -85,9 +85,9 @@
                     <tfoot class="table-light fw-bold">
                         <tr>
                             <td colspan="3">Total</td>
-                            <td class="text-end text-primary">R$ {{ number_format($venda->total, 2, ',', '.') }}</td>
+                            <td class="text-end text-primary">{{ moeda($venda->total) }}</td>
                             <td class="text-end text-success">
-                                R$ {{ number_format($venda->itens->sum(fn($i) => $i->subtotal - ($i->quantidade * $i->preco_custo)), 2, ',', '.') }}
+                                {{ moeda($venda->itens->sum(fn($i) => $i->subtotal - ($i->quantidade * $i->preco_custo))) }}
                             </td>
                         </tr>
                     </tfoot>

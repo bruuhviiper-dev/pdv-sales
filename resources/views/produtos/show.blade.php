@@ -40,11 +40,11 @@
                 </div>
                 <div class="d-flex justify-content-between py-2 border-bottom">
                     <span class="text-muted">Preço Custo</span>
-                    <span>R$ {{ number_format($produto->preco_custo, 2, ',', '.') }}</span>
+                    <span>{{ moeda($produto->preco_custo) }}</span>
                 </div>
                 <div class="d-flex justify-content-between py-2 border-bottom">
                     <span class="text-muted">Preço Venda</span>
-                    <strong class="text-primary">R$ {{ number_format($produto->preco_venda, 2, ',', '.') }}</strong>
+                    <strong class="text-primary">{{ moeda($produto->preco_venda) }}</strong>
                 </div>
                 <div class="d-flex justify-content-between py-2 border-bottom">
                     <span class="text-muted">Margem</span>

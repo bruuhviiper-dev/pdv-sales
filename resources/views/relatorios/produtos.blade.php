@@ -31,9 +31,9 @@
                     <td class="fw-semibold">{{ $p->nome }}</td>
                     <td class="text-muted small">{{ $p->categoria ?? '—' }}</td>
                     <td class="text-center fw-bold">{{ $p->total_vendido }}</td>
-                    <td class="text-end">R$ {{ number_format($p->total_receita, 2, ',', '.') }}</td>
-                    <td class="text-end text-muted small">R$ {{ number_format($p->total_custo, 2, ',', '.') }}</td>
-                    <td class="text-end text-success fw-semibold">R$ {{ number_format($p->lucro_bruto, 2, ',', '.') }}</td>
+                    <td class="text-end">{{ moeda($p->total_receita) }}</td>
+                    <td class="text-end text-muted small">{{ moeda($p->total_custo) }}</td>
+                    <td class="text-end text-success fw-semibold">{{ moeda($p->lucro_bruto) }}</td>
                     <td class="text-end">
                         @php $margem = $p->total_receita > 0 ? ($p->lucro_bruto / $p->total_receita) * 100 : 0 @endphp
                         <span class="{{ $margem >= 30 ? 'text-success' : ($margem >= 10 ? 'text-warning' : 'text-danger') }}">{{ number_format($margem, 1) }}%</span>
@@ -47,9 +47,9 @@
             <tfoot class="table-light fw-bold">
                 <tr>
                     <td colspan="4">TOTAL</td>
-                    <td class="text-end">R$ {{ number_format($produtos->sum('total_receita'), 2, ',', '.') }}</td>
-                    <td class="text-end">R$ {{ number_format($produtos->sum('total_custo'), 2, ',', '.') }}</td>
-                    <td class="text-end text-success">R$ {{ number_format($produtos->sum('lucro_bruto'), 2, ',', '.') }}</td>
+                    <td class="text-end">{{ moeda($produtos->sum('total_receita')) }}</td>
+                    <td class="text-end">{{ moeda($produtos->sum('total_custo')) }}</td>
+                    <td class="text-end text-success">{{ moeda($produtos->sum('lucro_bruto')) }}</td>
                     <td></td>
                 </tr>
             </tfoot>
