@@ -1,0 +1,12 @@
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.log
+
+# Editor folders
+.vscode/
+.idea/
+
+# Dependency / build output (not used by this template, but kept for safety)
+node_modules/
+dist/
