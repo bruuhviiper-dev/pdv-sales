@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 @section('title', 'Inventário de Estoque')
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('relatorios.index') }}">Relatórios</a></li>
@@ -6,8 +6,8 @@
 @endsection
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h5 class="mb-0 fw-bold"><i class="bi bi-archive me-2 text-primary"></i>Inventário de Estoque</h5>
-    <button onclick="window.print()" class="btn btn-outline-secondary"><i class="bi bi-printer me-1"></i>Imprimir</button>
+    <h5 class="mb-0 fw-bold"><i class="ti ti-archive me-2 text-primary"></i>Inventário de Estoque</h5>
+    <button onclick="window.print()" class="btn btn-outline-secondary"><i class="ti ti-printer me-1"></i>Imprimir</button>
 </div>
 
 <div class="row g-3 mb-4">

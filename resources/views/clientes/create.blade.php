@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 @section('title', 'Novo Cliente')
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('clientes.index') }}">Clientes</a></li>
@@ -6,8 +6,8 @@
 @endsection
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h5 class="mb-0 fw-bold"><i class="bi bi-person-plus me-2 text-primary"></i>Novo Cliente</h5>
-    <a href="{{ route('clientes.index') }}" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-1"></i>Voltar</a>
+    <h5 class="mb-0 fw-bold"><i class="ti ti-user-plus me-2 text-primary"></i>Novo Cliente</h5>
+    <a href="{{ route('clientes.index') }}" class="btn btn-outline-secondary"><i class="ti ti-arrow-left me-1"></i>Voltar</a>
 </div>
 <div class="row">
     <div class="col-lg-8">
@@ -75,7 +75,7 @@
                 </div>
             </div>
             <div class="d-flex gap-2">
-                <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg me-1"></i>Salvar Cliente</button>
+                <button type="submit" class="btn btn-primary"><i class="ti ti-check-lg me-1"></i>Salvar Cliente</button>
                 <a href="{{ route('clientes.index') }}" class="btn btn-outline-secondary">Cancelar</a>
             </div>
         </form>

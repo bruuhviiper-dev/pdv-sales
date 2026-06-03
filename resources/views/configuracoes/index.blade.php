@@ -1,8 +1,8 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 @section('title', 'Configurações')
 @section('breadcrumb')<li class="breadcrumb-item active">Configurações</li>@endsection
 @section('content')
-<h5 class="fw-bold mb-4"><i class="bi bi-gear me-2 text-primary"></i>Configurações da Empresa</h5>
+<h5 class="fw-bold mb-4"><i class="ti ti-settings me-2 text-primary"></i>Configurações da Empresa</h5>
 <div class="row">
     <div class="col-lg-8">
         <form method="POST" action="{{ route('configuracoes.salvar') }}" enctype="multipart/form-data">
@@ -47,7 +47,7 @@
                 </div>
             </div>
             <button type="submit" class="btn btn-primary px-4">
-                <i class="bi bi-check-lg me-1"></i>Salvar Configurações
+                <i class="ti ti-check-lg me-1"></i>Salvar Configurações
             </button>
         </form>
     </div>
@@ -56,13 +56,13 @@
             <div class="card-header">Links Rápidos</div>
             <div class="list-group list-group-flush">
                 <a href="{{ route('usuarios.index') }}" class="list-group-item list-group-item-action">
-                    <i class="bi bi-person-gear me-2 text-primary"></i>Gerenciar Usuários
+                    <i class="ti ti-user-gear me-2 text-primary"></i>Gerenciar Usuários
                 </a>
                 <a href="{{ route('estoque.historico') }}" class="list-group-item list-group-item-action">
-                    <i class="bi bi-clock-history me-2 text-primary"></i>Histórico de Estoque
+                    <i class="ti ti-history me-2 text-primary"></i>Histórico de Estoque
                 </a>
                 <a href="{{ route('relatorios.index') }}" class="list-group-item list-group-item-action">
-                    <i class="bi bi-bar-chart me-2 text-primary"></i>Relatórios
+                    <i class="ti ti-chart-bar me-2 text-primary"></i>Relatórios
                 </a>
             </div>
         </div>

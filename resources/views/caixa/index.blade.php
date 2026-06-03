@@ -1,15 +1,15 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 @section('title', 'Caixa')
 @section('breadcrumb')<li class="breadcrumb-item active">Caixa</li>@endsection
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h5 class="mb-0 fw-bold"><i class="bi bi-cash-coin me-2 text-primary"></i>Controle de Caixa</h5>
+    <h5 class="mb-0 fw-bold"><i class="ti ti-coin me-2 text-primary"></i>Controle de Caixa</h5>
 </div>
 
 @if($caixaAberto)
 <div class="card border-success mb-4">
     <div class="card-header bg-success bg-opacity-10 text-success">
-        <i class="bi bi-circle-fill me-2"></i>Caixa Aberto — {{ $caixaAberto->aberto_em->format('d/m/Y \à\s H:i') }}
+        <i class="ti ti-circle-filled me-2"></i>Caixa Aberto — {{ $caixaAberto->aberto_em->format('d/m/Y \à\s H:i') }}
         por {{ $caixaAberto->user->name }}
     </div>
     <div class="card-body">
@@ -30,7 +30,7 @@
                         <textarea name="observacoes" class="form-control form-control-sm" rows="2" placeholder="Opcional..."></textarea>
                     </div>
                     <button type="submit" class="btn btn-danger">
-                        <i class="bi bi-lock me-1"></i>Fechar Caixa
+                        <i class="ti ti-lock me-1"></i>Fechar Caixa
                     </button>
                 </form>
             </div>
@@ -42,7 +42,7 @@
     <div class="card-body">
         <div class="row align-items-center">
             <div class="col-md-6">
-                <h6 class="text-warning"><i class="bi bi-exclamation-triangle me-2"></i>Caixa Fechado</h6>
+                <h6 class="text-warning"><i class="ti ti-alert-triangle me-2"></i>Caixa Fechado</h6>
                 <p class="text-muted mb-0">Abra o caixa para começar a registrar vendas.</p>
             </div>
             <div class="col-md-6">
@@ -56,7 +56,7 @@
                         </div>
                     </div>
                     <button type="submit" class="btn btn-success">
-                        <i class="bi bi-unlock me-1"></i>Abrir Caixa
+                        <i class="ti ti-lock-open me-1"></i>Abrir Caixa
                     </button>
                 </form>
             </div>
@@ -84,7 +84,7 @@
                     <td class="text-end small">R$ {{ number_format($caixa->total_pix, 2, ',', '.') }}</td>
                     <td class="text-end small">R$ {{ number_format($caixa->total_cartao, 2, ',', '.') }}</td>
                     <td class="text-center"><span class="badge {{ $caixa->status === 'aberto' ? 'bg-success' : 'bg-secondary' }}">{{ ucfirst($caixa->status) }}</span></td>
-                    <td><a href="{{ route('caixa.relatorio', $caixa) }}" class="btn btn-sm btn-outline-primary"><i class="bi bi-file-text"></i></a></td>
+                    <td><a href="{{ route('caixa.relatorio', $caixa) }}" class="btn btn-sm btn-outline-primary"><i class="ti ti-file-text"></i></a></td>
                 </tr>
                 @empty
                 <tr><td colspan="10" class="text-center py-5 text-muted">Nenhum caixa registrado</td></tr>

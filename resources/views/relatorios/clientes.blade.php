@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 @section('title', 'Ranking de Clientes')
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('relatorios.index') }}">Relatórios</a></li>
@@ -6,8 +6,8 @@
 @endsection
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h5 class="mb-0 fw-bold"><i class="bi bi-people me-2 text-primary"></i>Ranking de Clientes</h5>
-    <button onclick="window.print()" class="btn btn-outline-secondary"><i class="bi bi-printer me-1"></i>Imprimir</button>
+    <h5 class="mb-0 fw-bold"><i class="ti ti-users me-2 text-primary"></i>Ranking de Clientes</h5>
+    <button onclick="window.print()" class="btn btn-outline-secondary"><i class="ti ti-printer me-1"></i>Imprimir</button>
 </div>
 <div class="card mb-3"><div class="card-body"><form method="GET" class="row g-2">
     <div class="col-md-4"><input type="date" name="data_inicio" value="{{ $dataInicio }}" class="form-control"></div>

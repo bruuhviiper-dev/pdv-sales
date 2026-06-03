@@ -1,10 +1,10 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 @section('title', 'Vendas')
 @section('breadcrumb')<li class="breadcrumb-item active">Vendas</li>@endsection
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h5 class="mb-0 fw-bold"><i class="bi bi-receipt me-2 text-primary"></i>Histórico de Vendas</h5>
-    <a href="{{ route('pdv.index') }}" class="btn btn-primary"><i class="bi bi-cart3 me-1"></i>Nova Venda (PDV)</a>
+    <h5 class="mb-0 fw-bold"><i class="ti ti-receipt-2 me-2 text-primary"></i>Histórico de Vendas</h5>
+    <a href="{{ route('pdv.index') }}" class="btn btn-primary"><i class="ti ti-shopping-cart me-1"></i>Nova Venda (PDV)</a>
 </div>
 
 @if($totais->total_vendas)
@@ -59,7 +59,7 @@
                     <option value="fiado">Fiado</option>
                 </select>
             </div>
-            <div class="col-md-1"><button type="submit" class="btn btn-outline-primary w-100"><i class="bi bi-search"></i></button></div>
+            <div class="col-md-1"><button type="submit" class="btn btn-outline-primary w-100"><i class="ti ti-search"></i></button></div>
         </form>
     </div>
 </div>
@@ -89,11 +89,11 @@
                     </td>
                     <td class="text-center">
                         <div class="btn-group btn-group-sm">
-                            <a href="{{ route('vendas.show', $venda) }}" class="btn btn-outline-primary"><i class="bi bi-eye"></i></a>
+                            <a href="{{ route('vendas.show', $venda) }}" class="btn btn-outline-primary"><i class="ti ti-eye"></i></a>
                             @if($venda->status === 'concluida')
                             <form method="POST" action="{{ route('vendas.cancelar', $venda) }}" onsubmit="return confirm('Cancelar esta venda e restaurar o estoque?')">
                                 @csrf @method('PATCH')
-                                <button class="btn btn-outline-danger"><i class="bi bi-x-circle"></i></button>
+                                <button class="btn btn-outline-danger"><i class="ti ti-x-circle"></i></button>
                             </form>
                             @endif
                         </div>

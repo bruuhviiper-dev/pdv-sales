@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 @section('title', 'Histórico de Estoque')
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('estoque.index') }}">Estoque</a></li>
@@ -6,8 +6,8 @@
 @endsection
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h5 class="mb-0 fw-bold"><i class="bi bi-clock-history me-2 text-primary"></i>Histórico de Movimentações</h5>
-    <a href="{{ route('estoque.index') }}" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-1"></i>Voltar</a>
+    <h5 class="mb-0 fw-bold"><i class="ti ti-history me-2 text-primary"></i>Histórico de Movimentações</h5>
+    <a href="{{ route('estoque.index') }}" class="btn btn-outline-secondary"><i class="ti ti-arrow-left me-1"></i>Voltar</a>
 </div>
 <div class="card mb-3">
     <div class="card-body">
@@ -29,7 +29,7 @@
                     <option value="devolucao" {{ request('tipo') === 'devolucao' ? 'selected' : '' }}>Devolução</option>
                 </select>
             </div>
-            <div class="col-md-2"><button type="submit" class="btn btn-outline-primary w-100"><i class="bi bi-search"></i></button></div>
+            <div class="col-md-2"><button type="submit" class="btn btn-outline-primary w-100"><i class="ti ti-search"></i></button></div>
         </form>
     </div>
 </div>

@@ -1,13 +1,13 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 @section('title', 'Produtos')
 @section('breadcrumb')
     <li class="breadcrumb-item active">Produtos</li>
 @endsection
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h5 class="mb-0 fw-bold"><i class="bi bi-box-seam me-2 text-primary"></i>Produtos</h5>
+    <h5 class="mb-0 fw-bold"><i class="ti ti-box me-2 text-primary"></i>Produtos</h5>
     <a href="{{ route('produtos.create') }}" class="btn btn-primary">
-        <i class="bi bi-plus-lg me-1"></i>Novo Produto
+        <i class="ti ti-plus me-1"></i>Novo Produto
     </a>
 </div>
 
@@ -40,7 +40,7 @@
                 </select>
             </div>
             <div class="col-md-1">
-                <button type="submit" class="btn btn-outline-primary w-100"><i class="bi bi-search"></i></button>
+                <button type="submit" class="btn btn-outline-primary w-100"><i class="ti ti-search"></i></button>
             </div>
         </form>
     </div>
@@ -94,11 +94,11 @@
                     </td>
                     <td class="text-center">
                         <div class="btn-group btn-group-sm">
-                            <a href="{{ route('produtos.show', $produto) }}" class="btn btn-outline-primary" title="Detalhes"><i class="bi bi-eye"></i></a>
-                            <a href="{{ route('produtos.edit', $produto) }}" class="btn btn-outline-secondary" title="Editar"><i class="bi bi-pencil"></i></a>
+                            <a href="{{ route('produtos.show', $produto) }}" class="btn btn-outline-primary" title="Detalhes"><i class="ti ti-eye"></i></a>
+                            <a href="{{ route('produtos.edit', $produto) }}" class="btn btn-outline-secondary" title="Editar"><i class="ti ti-pencil"></i></a>
                             <form method="POST" action="{{ route('produtos.destroy', $produto) }}" onsubmit="return confirm('Excluir produto?')">
                                 @csrf @method('DELETE')
-                                <button type="submit" class="btn btn-outline-danger" title="Excluir"><i class="bi bi-trash"></i></button>
+                                <button type="submit" class="btn btn-outline-danger" title="Excluir"><i class="ti ti-trash"></i></button>
                             </form>
                         </div>
                     </td>

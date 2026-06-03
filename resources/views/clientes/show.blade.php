@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 @section('title', $cliente->nome)
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('clientes.index') }}">Clientes</a></li>
@@ -6,10 +6,10 @@
 @endsection
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h5 class="mb-0 fw-bold"><i class="bi bi-person me-2 text-primary"></i>{{ $cliente->nome }}</h5>
+    <h5 class="mb-0 fw-bold"><i class="ti ti-user me-2 text-primary"></i>{{ $cliente->nome }}</h5>
     <div class="d-flex gap-2">
-        <a href="{{ route('clientes.edit', $cliente) }}" class="btn btn-outline-primary"><i class="bi bi-pencil me-1"></i>Editar</a>
-        <a href="{{ route('clientes.index') }}" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-1"></i>Voltar</a>
+        <a href="{{ route('clientes.edit', $cliente) }}" class="btn btn-outline-primary"><i class="ti ti-pencil me-1"></i>Editar</a>
+        <a href="{{ route('clientes.index') }}" class="btn btn-outline-secondary"><i class="ti ti-arrow-left me-1"></i>Voltar</a>
     </div>
 </div>
 <div class="row g-3">

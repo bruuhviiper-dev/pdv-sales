@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 @section('title', 'Editar Produto')
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('produtos.index') }}">Produtos</a></li>
@@ -6,8 +6,8 @@
 @endsection
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h5 class="mb-0 fw-bold"><i class="bi bi-pencil me-2 text-primary"></i>Editar Produto</h5>
-    <a href="{{ route('produtos.index') }}" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-1"></i>Voltar</a>
+    <h5 class="mb-0 fw-bold"><i class="ti ti-pencil me-2 text-primary"></i>Editar Produto</h5>
+    <a href="{{ route('produtos.index') }}" class="btn btn-outline-secondary"><i class="ti ti-arrow-left me-1"></i>Voltar</a>
 </div>
 
 <form method="POST" action="{{ route('produtos.update', $produto) }}" enctype="multipart/form-data">
@@ -107,7 +107,7 @@
                     <img src="{{ Storage::url($produto->foto) }}" class="img-fluid rounded mb-3" style="max-height:150px">
                     @else
                     <div class="border rounded p-4 mb-3 bg-light">
-                        <i class="bi bi-image text-muted" style="font-size:3rem"></i>
+                        <i class="ti ti-photo text-muted" style="font-size:3rem"></i>
                     </div>
                     @endif
                     <input type="file" name="foto" class="form-control" accept="image/*">
@@ -119,7 +119,7 @@
 
     <div class="mt-3 d-flex gap-2">
         <button type="submit" class="btn btn-primary px-4">
-            <i class="bi bi-check-lg me-1"></i>Salvar Alterações
+            <i class="ti ti-check-lg me-1"></i>Salvar Alterações
         </button>
         <a href="{{ route('produtos.index') }}" class="btn btn-outline-secondary">Cancelar</a>
     </div>

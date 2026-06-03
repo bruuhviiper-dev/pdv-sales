@@ -1,11 +1,11 @@
-<div>
+﻿<div>
     @if(!$caixaAberto)
     <div class="alert alert-warning d-flex align-items-center gap-3 mb-4">
-        <i class="bi bi-exclamation-triangle-fill fs-4"></i>
+        <i class="ti ti-alert-triangle-filled fs-4"></i>
         <div>
             <strong>Caixa fechado!</strong> Abra o caixa antes de realizar vendas.
             <a href="{{ route('caixa.index') }}" class="btn btn-sm btn-warning ms-3">
-                <i class="bi bi-unlock me-1"></i>Abrir Caixa
+                <i class="ti ti-lock-open me-1"></i>Abrir Caixa
             </a>
         </div>
     </div>
@@ -14,7 +14,7 @@
     @if($vendaConcluida && $ultimaVenda)
     <div class="alert alert-success alert-dismissible d-flex align-items-center justify-content-between mb-4">
         <div>
-            <i class="bi bi-check-circle-fill me-2 fs-5"></i>
+            <i class="ti ti-check-circle-fill me-2 fs-5"></i>
             <strong>Venda {{ $ultimaVenda['numero'] }} concluída!</strong>
             &nbsp; Total: <strong>R$ {{ number_format($ultimaVenda['total'], 2, ',', '.') }}</strong>
             @if($ultimaVenda['troco'] > 0)
@@ -23,7 +23,7 @@
             &nbsp;| Pgto: {{ $ultimaVenda['forma_pagamento'] }}
         </div>
         <button wire:click="novaVenda" class="btn btn-success btn-sm">
-            <i class="bi bi-plus-circle me-1"></i>Nova Venda
+            <i class="ti ti-circle-plus me-1"></i>Nova Venda
         </button>
     </div>
     @endif
@@ -34,7 +34,7 @@
             <div class="card mb-3">
                 <div class="card-body">
                     <label class="form-label fw-semibold mb-2">
-                        <i class="bi bi-search me-1 text-primary"></i>Buscar Produto (nome ou código de barras)
+                        <i class="ti ti-search me-1 text-primary"></i>Buscar Produto (nome ou código de barras)
                     </label>
                     <input
                         type="text"
@@ -69,11 +69,11 @@
 
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
-                    <span><i class="bi bi-cart me-2 text-primary"></i>Carrinho — {{ count($carrinho) }} iten(s)</span>
+                    <span><i class="ti ti-shopping-cart me-2 text-primary"></i>Carrinho — {{ count($carrinho) }} iten(s)</span>
                     @if(count($carrinho))
                     <button wire:click="limparVenda" type="button" class="btn btn-sm btn-outline-danger"
                         wire:confirm="Limpar o carrinho?">
-                        <i class="bi bi-trash me-1"></i>Limpar
+                        <i class="ti ti-trash me-1"></i>Limpar
                     </button>
                     @endif
                 </div>
@@ -98,12 +98,12 @@
                         </div>
                         <button wire:click="removerItem('{{ $key }}')" type="button"
                             class="btn btn-sm btn-outline-danger px-2 py-1">
-                            <i class="bi bi-x"></i>
+                            <i class="ti ti-x"></i>
                         </button>
                     </div>
                     @empty
                     <div class="text-center py-5 text-muted">
-                        <i class="bi bi-cart3 d-block mb-2" style="font-size:2.5rem;opacity:.3"></i>
+                        <i class="ti ti-shopping-cart d-block mb-2" style="font-size:2.5rem;opacity:.3"></i>
                         <div class="small">Carrinho vazio — busque um produto acima</div>
                     </div>
                     @endforelse
@@ -115,7 +115,7 @@
         <div class="col-lg-5">
             <div class="card">
                 <div class="card-header">
-                    <i class="bi bi-credit-card me-2 text-primary"></i>Pagamento
+                    <i class="ti ti-credit-card me-2 text-primary"></i>Pagamento
                 </div>
                 <div class="card-body">
                     <div class="mb-3">
@@ -180,7 +180,7 @@
                         </div>
                         @if($this->troco > 0)
                         <div class="alert alert-info py-2 mt-2 mb-0 fw-bold text-center">
-                            <i class="bi bi-cash-coin me-2"></i>Troco: R$ {{ number_format($this->troco, 2, ',', '.') }}
+                            <i class="ti ti-coin me-2"></i>Troco: R$ {{ number_format($this->troco, 2, ',', '.') }}
                         </div>
                         @endif
                     </div>
@@ -208,7 +208,7 @@
                         {{ (empty($carrinho) || !$caixaAberto) ? 'disabled' : '' }}
                     >
                         <span wire:loading.remove wire:target="finalizarVenda">
-                            <i class="bi bi-check-circle me-2"></i>Finalizar Venda
+                            <i class="ti ti-check-circle me-2"></i>Finalizar Venda
                         </span>
                         <span wire:loading wire:target="finalizarVenda">
                             <span class="spinner-border spinner-border-sm me-2"></span>Processando...

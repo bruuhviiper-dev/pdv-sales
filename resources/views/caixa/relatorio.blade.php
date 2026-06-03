@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 @section('title', 'Relatório do Caixa')
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('caixa.index') }}">Caixa</a></li>
@@ -6,10 +6,10 @@
 @endsection
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h5 class="mb-0 fw-bold"><i class="bi bi-file-text me-2 text-primary"></i>Relatório do Caixa</h5>
+    <h5 class="mb-0 fw-bold"><i class="ti ti-file-text me-2 text-primary"></i>Relatório do Caixa</h5>
     <div class="d-flex gap-2">
-        <button onclick="window.print()" class="btn btn-outline-secondary"><i class="bi bi-printer me-1"></i>Imprimir</button>
-        <a href="{{ route('caixa.index') }}" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-1"></i>Voltar</a>
+        <button onclick="window.print()" class="btn btn-outline-secondary"><i class="ti ti-printer me-1"></i>Imprimir</button>
+        <a href="{{ route('caixa.index') }}" class="btn btn-outline-secondary"><i class="ti ti-arrow-left me-1"></i>Voltar</a>
     </div>
 </div>
 

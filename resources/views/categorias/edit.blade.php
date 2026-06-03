@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 @section('title', 'Editar Categoria')
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('categorias.index') }}">Categorias</a></li>
@@ -8,7 +8,7 @@
 <div class="row justify-content-center">
     <div class="col-lg-6">
         <div class="card">
-            <div class="card-header fw-bold"><i class="bi bi-pencil me-2"></i>Editar Categoria</div>
+            <div class="card-header fw-bold"><i class="ti ti-pencil me-2"></i>Editar Categoria</div>
             <div class="card-body">
                 <form method="POST" action="{{ route('categorias.update', $categoria) }}">
                     @csrf @method('PUT')
@@ -32,7 +32,7 @@
                         </div>
                     </div>
                     <div class="d-flex gap-2">
-                        <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg me-1"></i>Salvar</button>
+                        <button type="submit" class="btn btn-primary"><i class="ti ti-check-lg me-1"></i>Salvar</button>
                         <a href="{{ route('categorias.index') }}" class="btn btn-outline-secondary">Cancelar</a>
                     </div>
                 </form>

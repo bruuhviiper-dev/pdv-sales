@@ -1,19 +1,19 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 @section('title', 'Estoque')
 @section('breadcrumb')<li class="breadcrumb-item active">Estoque</li>@endsection
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h5 class="mb-0 fw-bold"><i class="bi bi-archive me-2 text-primary"></i>Controle de Estoque
+    <h5 class="mb-0 fw-bold"><i class="ti ti-archive me-2 text-primary"></i>Controle de Estoque
         @if($totalCritico > 0)
         <span class="badge bg-danger ms-2">{{ $totalCritico }} em estoque crítico</span>
         @endif
     </h5>
     <div class="d-flex gap-2">
         <a href="{{ route('estoque.historico') }}" class="btn btn-outline-secondary">
-            <i class="bi bi-clock-history me-1"></i>Histórico
+            <i class="ti ti-history me-1"></i>Histórico
         </a>
         <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalMovimentar">
-            <i class="bi bi-arrow-left-right me-1"></i>Registrar Movimentação
+            <i class="ti ti-arrow-left-right me-1"></i>Registrar Movimentação
         </button>
     </div>
 </div>
@@ -28,7 +28,7 @@
                     <option value="critico" {{ request('alerta') === 'critico' ? 'selected' : '' }}>Estoque Crítico</option>
                 </select>
             </div>
-            <div class="col-md-1"><button type="submit" class="btn btn-outline-primary w-100"><i class="bi bi-search"></i></button></div>
+            <div class="col-md-1"><button type="submit" class="btn btn-outline-primary w-100"><i class="ti ti-search"></i></button></div>
         </form>
     </div>
 </div>
@@ -80,7 +80,7 @@
             <form method="POST" action="{{ route('estoque.movimentar') }}">
                 @csrf
                 <div class="modal-header">
-                    <h5 class="modal-title"><i class="bi bi-arrow-left-right me-2"></i>Movimentação de Estoque</h5>
+                    <h5 class="modal-title"><i class="ti ti-arrow-left-right me-2"></i>Movimentação de Estoque</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">

@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 @section('title', 'Usuários')
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('configuracoes.index') }}">Configurações</a></li>
@@ -6,9 +6,9 @@
 @endsection
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h5 class="mb-0 fw-bold"><i class="bi bi-person-gear me-2 text-primary"></i>Usuários do Sistema</h5>
+    <h5 class="mb-0 fw-bold"><i class="ti ti-user-gear me-2 text-primary"></i>Usuários do Sistema</h5>
     <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalNovoUsuario">
-        <i class="bi bi-plus-lg me-1"></i>Novo Usuário
+        <i class="ti ti-plus me-1"></i>Novo Usuário
     </button>
 </div>
 
@@ -40,7 +40,7 @@
                         @if($usuario->id !== auth()->id())
                         <form method="POST" action="{{ route('usuarios.destroy', $usuario) }}" onsubmit="return confirm('Excluir usuário?')">
                             @csrf @method('DELETE')
-                            <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
+                            <button class="btn btn-sm btn-outline-danger"><i class="ti ti-trash"></i></button>
                         </form>
                         @endif
                     </td>

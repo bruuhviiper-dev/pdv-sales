@@ -1,11 +1,11 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login — Sistema PDV</title>
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('assets/css/bootstrap-icons.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/tabler/tabler-icons.min.css') }}">
     <style>
         * { box-sizing: border-box; }
         body {
@@ -84,7 +84,7 @@
     <div class="login-card">
         <div class="login-header">
             <div class="logo-box">
-                <i class="bi bi-shop"></i>
+                <i class="ti ti-building-store"></i>
             </div>
             <h4>Sistema PDV</h4>
             <p>Gestão Comercial Completa</p>
@@ -97,7 +97,7 @@
 
             @if($errors->any())
             <div class="alert alert-danger mb-3">
-                <i class="bi bi-exclamation-circle me-2"></i>
+                <i class="ti ti-alert-circle me-2"></i>
                 E-mail ou senha incorretos. Tente novamente.
             </div>
             @endif
@@ -108,7 +108,7 @@
                 <div class="mb-3">
                     <label class="form-label" for="email">E-mail</label>
                     <div class="input-group">
-                        <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                        <span class="input-group-text"><i class="ti ti-mail"></i></span>
                         <input
                             id="email"
                             type="email"
@@ -126,7 +126,7 @@
                 <div class="mb-3">
                     <label class="form-label" for="password">Senha</label>
                     <div class="input-group">
-                        <span class="input-group-text"><i class="bi bi-lock"></i></span>
+                        <span class="input-group-text"><i class="ti ti-lock"></i></span>
                         <input
                             id="password"
                             type="password"
@@ -137,7 +137,7 @@
                             autocomplete="current-password"
                         >
                         <button class="btn btn-outline-secondary border border-start-0" type="button" id="togglePassword" style="border-radius:0 .6rem .6rem 0;border-left:0 !important">
-                            <i class="bi bi-eye" id="eyeIcon"></i>
+                            <i class="ti ti-eye" id="eyeIcon"></i>
                         </button>
                     </div>
                 </div>
@@ -153,14 +153,14 @@
                 </div>
 
                 <button type="submit" class="btn-login">
-                    <i class="bi bi-box-arrow-in-right me-2"></i>Entrar no Sistema
+                    <i class="ti ti-login-2 me-2"></i>Entrar no Sistema
                 </button>
             </form>
         </div>
 
         <div class="login-footer">
             <small>
-                <i class="bi bi-shield-check me-1 text-success"></i>
+                <i class="ti ti-shield-check me-1 text-success"></i>
                 Conexão segura &nbsp;|&nbsp; Sistema PDV v1.0
             </small>
         </div>
@@ -174,10 +174,10 @@ document.getElementById('togglePassword').addEventListener('click', function() {
     const icon = document.getElementById('eyeIcon');
     if (pwd.type === 'password') {
         pwd.type = 'text';
-        icon.className = 'bi bi-eye-slash';
+        icon.className = 'ti ti-eye-off';
     } else {
         pwd.type = 'password';
-        icon.className = 'bi bi-eye';
+        icon.className = 'ti ti-eye';
     }
 });
 </script>

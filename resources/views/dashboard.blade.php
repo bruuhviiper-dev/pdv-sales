@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 
 @section('title', 'Dashboard')
 
@@ -11,7 +11,7 @@
     <div class="col-sm-6 col-xl-3">
         <div class="card stat-card border-0 shadow-sm">
             <div class="card-body d-flex align-items-center gap-3">
-                <div class="icon bg-primary bg-opacity-10 text-primary"><i class="bi bi-currency-dollar"></i></div>
+                <div class="icon bg-primary bg-opacity-10 text-primary"><i class="ti ti-currency-dollar"></i></div>
                 <div>
                     <div class="text-muted small">Receita Hoje</div>
                     <div class="fw-bold fs-5">R$ {{ number_format($receitaHoje, 2, ',', '.') }}</div>
@@ -22,7 +22,7 @@
     <div class="col-sm-6 col-xl-3">
         <div class="card stat-card border-0 shadow-sm">
             <div class="card-body d-flex align-items-center gap-3">
-                <div class="icon bg-success bg-opacity-10 text-success"><i class="bi bi-cart-check"></i></div>
+                <div class="icon bg-success bg-opacity-10 text-success"><i class="ti ti-shopping-cart-check"></i></div>
                 <div>
                     <div class="text-muted small">Vendas Hoje</div>
                     <div class="fw-bold fs-5">{{ $qtdVendasHoje }}</div>
@@ -33,7 +33,7 @@
     <div class="col-sm-6 col-xl-3">
         <div class="card stat-card border-0 shadow-sm">
             <div class="card-body d-flex align-items-center gap-3">
-                <div class="icon bg-info bg-opacity-10 text-info"><i class="bi bi-graph-up-arrow"></i></div>
+                <div class="icon bg-info bg-opacity-10 text-info"><i class="ti ti-trending-up"></i></div>
                 <div>
                     <div class="text-muted small">Receita do Mês</div>
                     <div class="fw-bold fs-5">R$ {{ number_format($receitaMes, 2, ',', '.') }}</div>
@@ -44,7 +44,7 @@
     <div class="col-sm-6 col-xl-3">
         <div class="card stat-card border-0 shadow-sm">
             <div class="card-body d-flex align-items-center gap-3">
-                <div class="icon bg-warning bg-opacity-10 text-warning"><i class="bi bi-people"></i></div>
+                <div class="icon bg-warning bg-opacity-10 text-warning"><i class="ti ti-users"></i></div>
                 <div>
                     <div class="text-muted small">Total Clientes</div>
                     <div class="fw-bold fs-5">{{ $totalClientes }}</div>
@@ -58,14 +58,14 @@
     <div class="col-lg-8">
         <div class="card h-100">
             <div class="card-header py-3">
-                <i class="bi bi-bar-chart me-2 text-primary"></i>Vendas — Últimos 30 dias
+                <i class="ti ti-chart-bar me-2 text-primary"></i>Vendas — Últimos 30 dias
             </div>
             <div class="card-body"><canvas id="graficoVendas" height="100"></canvas></div>
         </div>
     </div>
     <div class="col-lg-4">
         <div class="card h-100">
-            <div class="card-header py-3"><i class="bi bi-trophy me-2 text-warning"></i>Top 5 Produtos (30d)</div>
+            <div class="card-header py-3"><i class="ti ti-trophy me-2 text-warning"></i>Top 5 Produtos (30d)</div>
             <div class="card-body p-0">
                 <div class="list-group list-group-flush">
                     @forelse($produtosMaisVendidos as $i => $prod)
@@ -92,7 +92,7 @@
     <div class="col-lg-6">
         <div class="card">
             <div class="card-header py-3 d-flex justify-content-between align-items-center">
-                <span><i class="bi bi-exclamation-triangle me-2 text-danger"></i>Estoque Crítico</span>
+                <span><i class="ti ti-alert-triangle me-2 text-danger"></i>Estoque Crítico</span>
                 <a href="{{ route('estoque.index', ['alerta' => 'critico']) }}" class="btn btn-sm btn-outline-danger">Ver todos</a>
             </div>
             <div class="card-body p-0">
@@ -108,7 +108,7 @@
                 </div>
                 @empty
                 <div class="text-success text-center py-4">
-                    <i class="bi bi-check-circle fs-4"></i>
+                    <i class="ti ti-check-circle fs-4"></i>
                     <div class="mt-1 small">Estoque OK!</div>
                 </div>
                 @endforelse
@@ -118,7 +118,7 @@
     <div class="col-lg-6">
         <div class="card">
             <div class="card-header py-3 d-flex justify-content-between align-items-center">
-                <span><i class="bi bi-calendar-x me-2 text-warning"></i>Contas a Vencer (7 dias)</span>
+                <span><i class="ti ti-calendar-x me-2 text-warning"></i>Contas a Vencer (7 dias)</span>
                 <a href="{{ route('financeiro.index') }}" class="btn btn-sm btn-outline-warning">Ver todas</a>
             </div>
             <div class="card-body p-0">
@@ -132,7 +132,7 @@
                 </div>
                 @empty
                 <div class="text-success text-center py-4">
-                    <i class="bi bi-check-circle fs-4"></i>
+                    <i class="ti ti-check-circle fs-4"></i>
                     <div class="mt-1 small">Nenhuma conta urgente!</div>
                 </div>
                 @endforelse

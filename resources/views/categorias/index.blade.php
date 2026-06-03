@@ -1,10 +1,10 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 @section('title', 'Categorias')
 @section('breadcrumb')<li class="breadcrumb-item active">Categorias</li>@endsection
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h5 class="mb-0 fw-bold"><i class="bi bi-tags me-2 text-primary"></i>Categorias</h5>
-    <a href="{{ route('categorias.create') }}" class="btn btn-primary"><i class="bi bi-plus-lg me-1"></i>Nova Categoria</a>
+    <h5 class="mb-0 fw-bold"><i class="ti ti-tags me-2 text-primary"></i>Categorias</h5>
+    <a href="{{ route('categorias.create') }}" class="btn btn-primary"><i class="ti ti-plus me-1"></i>Nova Categoria</a>
 </div>
 <div class="card">
     <div class="table-responsive">
@@ -22,10 +22,10 @@
                     <td class="text-center"><span class="badge {{ $cat->ativo ? 'bg-success' : 'bg-secondary' }}">{{ $cat->ativo ? 'Ativa' : 'Inativa' }}</span></td>
                     <td class="text-center">
                         <div class="btn-group btn-group-sm">
-                            <a href="{{ route('categorias.edit', $cat) }}" class="btn btn-outline-secondary"><i class="bi bi-pencil"></i></a>
+                            <a href="{{ route('categorias.edit', $cat) }}" class="btn btn-outline-secondary"><i class="ti ti-pencil"></i></a>
                             <form method="POST" action="{{ route('categorias.destroy', $cat) }}" onsubmit="return confirm('Excluir categoria?')">
                                 @csrf @method('DELETE')
-                                <button class="btn btn-outline-danger"><i class="bi bi-trash"></i></button>
+                                <button class="btn btn-outline-danger"><i class="ti ti-trash"></i></button>
                             </form>
                         </div>
                     </td>

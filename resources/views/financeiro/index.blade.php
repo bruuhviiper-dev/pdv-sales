@@ -1,10 +1,10 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 @section('title', 'Financeiro')
 @section('breadcrumb')<li class="breadcrumb-item active">Contas</li>@endsection
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h5 class="mb-0 fw-bold"><i class="bi bi-wallet2 me-2 text-primary"></i>Contas a Pagar / Receber</h5>
-    <a href="{{ route('financeiro.create') }}" class="btn btn-primary"><i class="bi bi-plus-lg me-1"></i>Nova Conta</a>
+    <h5 class="mb-0 fw-bold"><i class="ti ti-wallet me-2 text-primary"></i>Contas a Pagar / Receber</h5>
+    <a href="{{ route('financeiro.create') }}" class="btn btn-primary"><i class="ti ti-plus me-1"></i>Nova Conta</a>
 </div>
 
 <div class="row g-3 mb-4">
@@ -54,7 +54,7 @@
             </div>
             <div class="col-md-2"><input type="date" name="vencimento_inicio" value="{{ request('vencimento_inicio') }}" class="form-control" placeholder="Venc. início"></div>
             <div class="col-md-2"><input type="date" name="vencimento_fim" value="{{ request('vencimento_fim') }}" class="form-control" placeholder="Venc. fim"></div>
-            <div class="col-md-2"><button type="submit" class="btn btn-outline-primary w-100"><i class="bi bi-search"></i></button></div>
+            <div class="col-md-2"><button type="submit" class="btn btn-outline-primary w-100"><i class="ti ti-search"></i></button></div>
         </form>
     </div>
 </div>
@@ -78,12 +78,12 @@
                         <div class="btn-group btn-group-sm">
                             @if($conta->status === 'pendente')
                             <button class="btn btn-outline-success" data-bs-toggle="modal" data-bs-target="#modalPagar{{ $conta->id }}" title="Registrar Pagamento">
-                                <i class="bi bi-check-circle"></i>
+                                <i class="ti ti-check-circle"></i>
                             </button>
                             @endif
                             <form method="POST" action="{{ route('financeiro.destroy', $conta) }}" onsubmit="return confirm('Excluir conta?')">
                                 @csrf @method('DELETE')
-                                <button class="btn btn-outline-danger"><i class="bi bi-trash"></i></button>
+                                <button class="btn btn-outline-danger"><i class="ti ti-trash"></i></button>
                             </form>
                         </div>
                     </td>

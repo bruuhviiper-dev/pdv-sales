@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 @section('title', $produto->nome)
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('produtos.index') }}">Produtos</a></li>
@@ -6,10 +6,10 @@
 @endsection
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h5 class="mb-0 fw-bold"><i class="bi bi-box-seam me-2 text-primary"></i>{{ $produto->nome }}</h5>
+    <h5 class="mb-0 fw-bold"><i class="ti ti-box me-2 text-primary"></i>{{ $produto->nome }}</h5>
     <div class="d-flex gap-2">
-        <a href="{{ route('produtos.edit', $produto) }}" class="btn btn-outline-primary"><i class="bi bi-pencil me-1"></i>Editar</a>
-        <a href="{{ route('produtos.index') }}" class="btn btn-outline-secondary"><i class="bi bi-arrow-left me-1"></i>Voltar</a>
+        <a href="{{ route('produtos.edit', $produto) }}" class="btn btn-outline-primary"><i class="ti ti-pencil me-1"></i>Editar</a>
+        <a href="{{ route('produtos.index') }}" class="btn btn-outline-secondary"><i class="ti ti-arrow-left me-1"></i>Voltar</a>
     </div>
 </div>
 
@@ -20,7 +20,7 @@
                 @if($produto->foto)
                 <img src="{{ Storage::url($produto->foto) }}" class="img-fluid rounded" style="max-height:200px">
                 @else
-                <div class="py-5 text-muted"><i class="bi bi-image fs-1"></i><div class="mt-2">Sem foto</div></div>
+                <div class="py-5 text-muted"><i class="ti ti-photo fs-1"></i><div class="mt-2">Sem foto</div></div>
                 @endif
             </div>
         </div>

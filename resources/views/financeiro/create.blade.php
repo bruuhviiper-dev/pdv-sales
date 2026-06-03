@@ -1,4 +1,4 @@
-@extends('layouts.app')
+﻿@extends('layouts.app')
 @section('title', 'Nova Conta')
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('financeiro.index') }}">Contas</a></li>
@@ -8,7 +8,7 @@
 <div class="row justify-content-center">
     <div class="col-lg-6">
         <div class="card">
-            <div class="card-header fw-bold"><i class="bi bi-plus-square me-2"></i>Nova Conta</div>
+            <div class="card-header fw-bold"><i class="ti ti-plus-square me-2"></i>Nova Conta</div>
             <div class="card-body">
                 <form method="POST" action="{{ route('financeiro.store') }}">
                     @csrf
@@ -47,7 +47,7 @@
                         <textarea name="observacoes" class="form-control" rows="2">{{ old('observacoes') }}</textarea>
                     </div>
                     <div class="d-flex gap-2">
-                        <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg me-1"></i>Salvar</button>
+                        <button type="submit" class="btn btn-primary"><i class="ti ti-check-lg me-1"></i>Salvar</button>
                         <a href="{{ route('financeiro.index') }}" class="btn btn-outline-secondary">Cancelar</a>
                     </div>
                 </form>
