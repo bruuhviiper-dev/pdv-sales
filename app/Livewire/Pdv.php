@@ -9,6 +9,7 @@ use App\Models\VendaItem;
 use App\Models\EstoqueMovimentacao;
 use App\Models\Caixa;
 use Livewire\Component;
+use Livewire\Attributes\Computed;
 use Illuminate\Support\Facades\DB;
 
 class Pdv extends Component
@@ -93,17 +94,20 @@ class Pdv extends Component
         }
     }
 
-    public function getSubtotalProperty(): float
+    #[Computed]
+    public function subtotal(): float
     {
         return round(array_sum(array_column($this->carrinho, 'subtotal')), 2);
     }
 
-    public function getTotalProperty(): float
+    #[Computed]
+    public function total(): float
     {
         return round(max(0, $this->subtotal - $this->desconto), 2);
     }
 
-    public function getTrocoProperty(): float
+    #[Computed]
+    public function troco(): float
     {
         return $this->formaPagamento === 'dinheiro'
             ? max(0, round($this->valorPago - $this->total, 2))

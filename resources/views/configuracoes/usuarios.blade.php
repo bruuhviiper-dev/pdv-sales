@@ -21,7 +21,12 @@
             <tbody>
                 @foreach($usuarios as $usuario)
                 <tr>
-                    <td class="fw-semibold">{{ $usuario->name }} {{ $usuario->id === auth()->id() ? '<span class="badge bg-info">Você</span>' : '' }}</td>
+                    <td class="fw-semibold">
+                        {{ $usuario->name }}
+                        @if($usuario->id === auth()->id())
+                            <span class="badge bg-info ms-1">Você</span>
+                        @endif
+                    </td>
                     <td class="text-muted">{{ $usuario->email }}</td>
                     <td>
                         @foreach($usuario->roles as $role)
