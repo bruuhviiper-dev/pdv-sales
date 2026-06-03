@@ -46,6 +46,10 @@
 </style>
 @endpush
 
+@push('scripts')
+<script src="{{ asset('assets/js/qrcode.min.js') }}"></script>
+@endpush
+
 @section('content')
     @livewire('pdv')
 @endsection

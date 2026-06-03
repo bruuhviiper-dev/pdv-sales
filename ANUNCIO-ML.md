@@ -24,8 +24,15 @@ Este sistema foi desenvolvido com tecnologia profissional (Laravel 11) e conta c
 
 ### 🚀 O QUE ESTÁ INCLUSO:
 
+**⭐ DIFERENCIAIS EXCLUSIVOS (que outros PDVs não têm):**
+- 📲 **QR Code PIX automático no caixa** — gere o QR Code na hora da venda, cliente paga escaneando, SEM maquininha e SEM taxa
+- 💬 **Recibo por WhatsApp em 1 clique** — envie o comprovante direto pro WhatsApp do cliente
+- 📴 **Funciona como APP no celular (PWA)** — instale na tela inicial e abra até offline
+- 🧾 **NFC-e (Nota Fiscal) via API** — emita nota fiscal do consumidor direto do caixa (opcional)
+- 🖨️ **Impressão de recibo** — compatível com impressora térmica 80mm
+
 **📦 Módulos Completos:**
-- 🛒 **PDV (Frente de Caixa)** — tela de venda com busca de produto, carrinho, desconto, 5 formas de pagamento (Dinheiro, PIX, Cartão Débito/Crédito e Fiado), troco automático
+- 🛒 **PDV (Frente de Caixa)** — tela de venda com busca de produto, carrinho, desconto, 5 formas de pagamento (Dinheiro, PIX, Cartão Débito/Crédito e Fiado), troco automático e QR Code PIX
 - 📊 **Dashboard** — gráficos de vendas, receita do dia e do mês, alertas de estoque crítico
 - 📦 **Produtos** — cadastro completo com foto, código de barras, categorias, preço de custo e venda, margem de lucro automática
 - 🏭 **Estoque** — entrada e saída, histórico de movimentações, alertas de estoque baixo, inventário

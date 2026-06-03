@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sem conexão — Sistema PDV</title>
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/tabler/tabler-icons.min.css">
+    <style>
+        body { min-height:100vh; display:flex; align-items:center; justify-content:center;
+            background:linear-gradient(135deg,#0f172a,#1e293b); font-family:'Segoe UI',sans-serif; }
+        .box { text-align:center; color:#fff; max-width:420px; padding:2rem; }
+        .ico { width:90px;height:90px;border-radius:1.2rem;background:linear-gradient(135deg,#6366f1,#4f46e5);
+            display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem; }
+        .ico i { font-size:2.6rem;color:#fff; }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <div class="ico"><i class="ti ti-wifi-off"></i></div>
+        <h3 class="fw-bold">Você está sem internet</h3>
+        <p class="text-white-50">Verifique sua conexão e tente novamente. As páginas já visitadas continuam disponíveis offline.</p>
+        <button onclick="location.reload()" class="btn btn-light mt-2">
+            <i class="ti ti-refresh me-1"></i>Tentar novamente
+        </button>
+    </div>
+</body>
+</html>

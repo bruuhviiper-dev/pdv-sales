@@ -44,6 +44,22 @@ class VendaController extends Controller
         return view('vendas.show', compact('venda'));
     }
 
+    public function recibo(Venda $venda)
+    {
+        $venda->load(['cliente', 'user', 'itens']);
+        return view('vendas.recibo', compact('venda'));
+    }
+
+    public function emitirNfce(Venda $venda)
+    {
+        if ($venda->status !== 'concluida') {
+            return back()->with('error', 'Só é possível emitir NFC-e de vendas concluídas.');
+        }
+        $venda->loadMissing('itens');
+        $r = \App\Services\NotaFiscalService::emitir($venda);
+        return back()->with($r['ok'] ? 'success' : 'error', $r['mensagem']);
+    }
+
     public function cancelar(Venda $venda)
     {
         if ($venda->status !== 'concluida') {

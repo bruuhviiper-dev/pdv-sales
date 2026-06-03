@@ -114,6 +114,26 @@ class Pdv extends Component
             : 0;
     }
 
+    #[Computed]
+    public function pixConfigurado(): bool
+    {
+        return !empty(\App\Models\Configuracao::get('pix_chave'));
+    }
+
+    #[Computed]
+    public function pixPayload(): ?string
+    {
+        if (!$this->pixConfigurado || $this->total <= 0) {
+            return null;
+        }
+        return \App\Services\Pix::payload(
+            \App\Models\Configuracao::get('pix_chave'),
+            \App\Models\Configuracao::get('pix_beneficiario', \App\Models\Configuracao::get('empresa_nome', 'RECEBEDOR')),
+            \App\Models\Configuracao::get('pix_cidade', \App\Models\Configuracao::get('empresa_cidade', 'CIDADE')),
+            $this->total
+        );
+    }
+
     public function finalizarVenda(): void
     {
         if (empty($this->carrinho)) {
@@ -174,6 +194,7 @@ class Pdv extends Component
             }
 
             $this->ultimaVenda = [
+                'id' => $venda->id,
                 'numero' => $venda->numero_venda,
                 'total' => $venda->total,
                 'forma_pagamento' => $venda->formaPagamentoLabel(),

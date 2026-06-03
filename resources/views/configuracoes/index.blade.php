@@ -75,6 +75,57 @@
                     </div>
                 </div>
             </div>
+
+            <div class="card mb-3">
+                <div class="card-header"><i class="ti ti-qrcode me-2 text-primary"></i>PIX — QR Code no Caixa</div>
+                <div class="card-body">
+                    <p class="text-muted small mb-3">Configure sua chave PIX para gerar o QR Code automaticamente na hora da venda. O cliente paga escaneando — sem maquininha.</p>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Chave PIX</label>
+                            <input type="text" name="pix_chave" value="{{ $configs->get('pix_chave')?->valor }}" class="form-control" placeholder="CPF, CNPJ, e-mail, telefone ou aleatória">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Nome do Beneficiário</label>
+                            <input type="text" name="pix_beneficiario" value="{{ $configs->get('pix_beneficiario')?->valor }}" class="form-control" maxlength="25" placeholder="Nome que recebe (max 25)">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Cidade do Beneficiário</label>
+                            <input type="text" name="pix_cidade" value="{{ $configs->get('pix_cidade')?->valor }}" class="form-control" maxlength="15" placeholder="Ex: SAO PAULO">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-3">
+                <div class="card-header"><i class="ti ti-receipt-tax me-2 text-primary"></i>NFC-e — Nota Fiscal (opcional)</div>
+                <div class="card-body">
+                    <p class="text-muted small mb-3">
+                        Emita NFC-e direto do caixa via API (Focus NFe / NFe.io). Requer conta no provedor e certificado digital A1.
+                        <a href="https://focusnfe.com.br" target="_blank">Saiba mais</a>.
+                    </p>
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label class="form-label">Provedor</label>
+                            <select name="nfce_provider" class="form-select">
+                                <option value="focus" {{ $configs->get('nfce_provider')?->valor === 'focus' ? 'selected' : '' }}>Focus NFe</option>
+                                <option value="nfeio" {{ $configs->get('nfce_provider')?->valor === 'nfeio' ? 'selected' : '' }}>NFe.io</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Ambiente</label>
+                            <select name="nfce_ambiente" class="form-select">
+                                <option value="homologacao" {{ $configs->get('nfce_ambiente')?->valor === 'homologacao' ? 'selected' : '' }}>Homologação (teste)</option>
+                                <option value="producao" {{ $configs->get('nfce_ambiente')?->valor === 'producao' ? 'selected' : '' }}>Produção</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Token da API</label>
+                            <input type="password" name="nfce_token" value="{{ $configs->get('nfce_token')?->valor }}" class="form-control" placeholder="Token do provedor">
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
 
         {{-- Coluna direita: logo --}}

@@ -42,6 +42,7 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/vendas', [VendaController::class, 'index'])->name('vendas.index');
         Route::get('/vendas/{venda}', [VendaController::class, 'show'])->name('vendas.show');
+        Route::get('/vendas/{venda}/recibo', [VendaController::class, 'recibo'])->name('vendas.recibo');
     });
 
     // Produtos e Estoque — Admin e Estoquista
@@ -67,6 +68,7 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/clientes/{cliente}', [ClienteController::class, 'destroy'])->name('clientes.destroy');
 
         Route::patch('/vendas/{venda}/cancelar', [VendaController::class, 'cancelar'])->name('vendas.cancelar');
+        Route::post('/vendas/{venda}/nfce', [VendaController::class, 'emitirNfce'])->name('vendas.nfce');
 
         Route::get('/financeiro', [FinanceiroController::class, 'index'])->name('financeiro.index');
         Route::get('/financeiro/criar', [FinanceiroController::class, 'create'])->name('financeiro.create');

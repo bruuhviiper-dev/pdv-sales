@@ -23,6 +23,8 @@ class ConfiguracaoController extends Controller
             'empresa_nome', 'empresa_cnpj', 'empresa_telefone', 'empresa_email',
             'empresa_endereco', 'empresa_cidade', 'empresa_estado', 'empresa_cep',
             'moeda_simbolo', 'recibo_rodape',
+            'pix_chave', 'pix_beneficiario', 'pix_cidade',
+            'nfce_provider', 'nfce_token', 'nfce_ambiente',
         ];
 
         foreach ($campos as $campo) {

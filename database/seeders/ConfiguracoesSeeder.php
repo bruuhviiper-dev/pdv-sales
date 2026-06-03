@@ -20,6 +20,12 @@ class ConfiguracoesSeeder extends Seeder
             ['chave' => 'empresa_cep', 'valor' => '', 'grupo' => 'empresa'],
             ['chave' => 'moeda_simbolo', 'valor' => 'R$', 'grupo' => 'sistema'],
             ['chave' => 'recibo_rodape', 'valor' => 'Obrigado pela preferência!', 'grupo' => 'sistema'],
+            ['chave' => 'pix_chave', 'valor' => '', 'grupo' => 'pix'],
+            ['chave' => 'pix_beneficiario', 'valor' => '', 'grupo' => 'pix'],
+            ['chave' => 'pix_cidade', 'valor' => '', 'grupo' => 'pix'],
+            ['chave' => 'nfce_provider', 'valor' => 'focus', 'grupo' => 'fiscal'],
+            ['chave' => 'nfce_token', 'valor' => '', 'grupo' => 'fiscal'],
+            ['chave' => 'nfce_ambiente', 'valor' => 'homologacao', 'grupo' => 'fiscal'],
         ];
 
         foreach ($configs as $config) {

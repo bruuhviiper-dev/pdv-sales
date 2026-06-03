@@ -253,6 +253,10 @@
 </head>
 <body>
 
+<div id="offlineBar" class="d-none position-fixed top-0 start-0 end-0 text-center text-white py-1 small" style="z-index:2000;background:#dc2626">
+    <i class="ti ti-wifi-off me-1"></i>Você está offline — as vendas serão registradas quando a conexão voltar.
+</div>
+
 <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeMobileSidebar()"></div>
 
 <aside class="sidebar" id="sidebar">
@@ -556,6 +560,13 @@ function closeMobileSidebar() {
     sidebar.classList.remove('mobile-open');
     document.getElementById('sidebarOverlay').classList.remove('active');
 }
+
+// ── PWA: registrar service worker + indicador offline ──
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}));
+}
+window.addEventListener('offline', () => document.getElementById('offlineBar')?.classList.remove('d-none'));
+window.addEventListener('online',  () => document.getElementById('offlineBar')?.classList.add('d-none'));
 </script>
 @stack('scripts')
 </body>

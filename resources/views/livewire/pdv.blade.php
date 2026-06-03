@@ -22,9 +22,14 @@
             @endif
             &nbsp;| Pgto: {{ $ultimaVenda['forma_pagamento'] }}
         </div>
-        <button wire:click="novaVenda" class="btn btn-success btn-sm">
-            <i class="ti ti-circle-plus me-1"></i>Nova Venda
-        </button>
+        <div class="d-flex gap-2">
+            <a href="{{ route('vendas.recibo', $ultimaVenda['id']) }}" target="_blank" class="btn btn-outline-success btn-sm">
+                <i class="ti ti-receipt me-1"></i>Recibo / WhatsApp
+            </a>
+            <button wire:click="novaVenda" class="btn btn-success btn-sm">
+                <i class="ti ti-circle-plus me-1"></i>Nova Venda
+            </button>
+        </div>
     </div>
     @endif
 
@@ -191,6 +196,29 @@
                     </div>
                     @endif
 
+                    @if($formaPagamento === 'pix')
+                    <div class="mb-3 text-center">
+                        @if($this->pixConfigurado && $this->total > 0)
+                            <label class="form-label small fw-semibold d-block text-start">QR Code PIX — cliente escaneia para pagar</label>
+                            <div id="pix-qr" wire:ignore class="d-flex justify-content-center my-2"></div>
+                            <input type="hidden" id="pix-payload" value="{{ $this->pixPayload }}">
+                            <div class="input-group input-group-sm mt-2">
+                                <input type="text" id="pix-code" class="form-control" value="{{ $this->pixPayload }}" readonly style="font-size:.7rem">
+                                <button type="button" class="btn btn-outline-primary" onclick="copiarPix()">
+                                    <i class="ti ti-copy"></i> Copiar
+                                </button>
+                            </div>
+                            <div class="small text-muted mt-1">PIX Copia e Cola — valido por esta venda</div>
+                        @else
+                            <div class="alert alert-warning small mb-0 text-start">
+                                <i class="ti ti-alert-triangle me-1"></i>
+                                Configure sua <strong>chave PIX</strong> em
+                                <a href="{{ route('configuracoes.index') }}">Configurações</a> para gerar o QR Code automaticamente.
+                            </div>
+                        @endif
+                    </div>
+                    @endif
+
                     @if($formaPagamento === 'cartao_credito')
                     <div class="mb-3">
                         <label class="form-label small fw-semibold">Parcelas</label>
@@ -227,8 +255,31 @@
 
 @script
 <script>
-    $wire.on('alerta', ({ mensagem }) => {
-        alert(mensagem);
-    });
+    function renderPixQR() {
+        const el = document.getElementById('pix-qr');
+        const inp = document.getElementById('pix-payload');
+        if (!el || !inp || !inp.value) { if (el) el.innerHTML = ''; return; }
+        if (el.dataset.rendered === inp.value) return;
+        el.innerHTML = '';
+        if (typeof QRCode !== 'undefined') {
+            new QRCode(el, { text: inp.value, width: 190, height: 190, correctLevel: QRCode.CorrectLevel.M });
+            el.dataset.rendered = inp.value;
+        }
+    }
+    window.copiarPix = function () {
+        const t = document.getElementById('pix-code');
+        if (!t) return;
+        t.select(); t.setSelectionRange(0, 99999);
+        navigator.clipboard?.writeText(t.value).catch(() => document.execCommand('copy'));
+        const btn = event.currentTarget;
+        const html = btn.innerHTML;
+        btn.innerHTML = '<i class="ti ti-check"></i> Copiado!';
+        setTimeout(() => btn.innerHTML = html, 1500);
+    };
+
+    renderPixQR();
+    Livewire.hook('commit', ({ succeed }) => { succeed(() => setTimeout(renderPixQR, 60)); });
+
+    $wire.on('alerta', ({ mensagem }) => alert(mensagem));
 </script>
 @endscript

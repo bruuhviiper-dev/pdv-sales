@@ -8,7 +8,18 @@
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h5 class="mb-0 fw-bold"><i class="ti ti-receipt-2 me-2 text-primary"></i>Venda {{ $venda->numero_venda }}</h5>
     <div class="d-flex gap-2">
-        <button onclick="window.print()" class="btn btn-outline-secondary"><i class="ti ti-printer me-1"></i>Imprimir</button>
+        <a href="{{ route('vendas.recibo', $venda) }}" target="_blank" class="btn btn-success"><i class="ti ti-receipt me-1"></i>Recibo / WhatsApp</a>
+        @if($venda->status === 'concluida' && $venda->nfce_status !== 'autorizada')
+        @role('admin')
+        <form method="POST" action="{{ route('vendas.nfce', $venda) }}" onsubmit="return confirm('Emitir NFC-e desta venda?')">
+            @csrf
+            <button class="btn btn-outline-primary"><i class="ti ti-receipt-tax me-1"></i>Emitir NFC-e</button>
+        </form>
+        @endrole
+        @endif
+        @if($venda->nfce_status === 'autorizada' && $venda->nfce_url)
+        <a href="{{ $venda->nfce_url }}" target="_blank" class="btn btn-outline-success"><i class="ti ti-file-check me-1"></i>Ver NFC-e</a>
+        @endif
         <a href="{{ route('vendas.index') }}" class="btn btn-outline-secondary"><i class="ti ti-arrow-left me-1"></i>Voltar</a>
     </div>
 </div>

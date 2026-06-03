@@ -14,6 +14,7 @@ class Venda extends Model
         'numero_venda', 'cliente_id', 'user_id', 'subtotal', 'desconto',
         'total', 'forma_pagamento', 'valor_pago', 'troco', 'parcelas',
         'status', 'observacoes',
+        'nfce_status', 'nfce_chave', 'nfce_url', 'nfce_mensagem',
     ];
 
     protected $casts = [
