@@ -1,4 +1,4 @@
-﻿@extends('layouts.app')
+@extends('layouts.app')
 @section('title', 'Nova Conta')
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('financeiro.index') }}">Contas</a></li>

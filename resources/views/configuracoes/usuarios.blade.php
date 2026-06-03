@@ -1,4 +1,4 @@
-﻿@extends('layouts.app')
+@extends('layouts.app')
 @section('title', 'Usuários')
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('configuracoes.index') }}">Configurações</a></li>

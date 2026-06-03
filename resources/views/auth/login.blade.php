@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -6,6 +6,7 @@
     <title>Login — Sistema PDV</title>
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/tabler/tabler-icons.min.css') }}">
+    @include('partials.favicon')
     <style>
         * { box-sizing: border-box; }
         body {

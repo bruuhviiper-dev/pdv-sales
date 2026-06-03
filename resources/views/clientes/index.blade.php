@@ -1,4 +1,4 @@
-﻿@extends('layouts.app')
+@extends('layouts.app')
 @section('title', 'Clientes')
 @section('breadcrumb')<li class="breadcrumb-item active">Clientes</li>@endsection
 @section('content')

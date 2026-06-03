@@ -1,4 +1,4 @@
-﻿@extends('layouts.app')
+@extends('layouts.app')
 @section('title', 'Histórico de Estoque')
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('estoque.index') }}">Estoque</a></li>

@@ -1,4 +1,4 @@
-﻿@extends('layouts.app')
+@extends('layouts.app')
 @section('title', $cliente->nome)
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('clientes.index') }}">Clientes</a></li>

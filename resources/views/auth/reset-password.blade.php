@@ -6,6 +6,7 @@
     <title>Nova Senha — Sistema PDV</title>
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/tabler/tabler-icons.min.css') }}">
+    @include('partials.favicon')
     <style>
         body { min-height:100vh; background:linear-gradient(135deg,#0f172a 0%,#1e3a5f 50%,#1e293b 100%); display:flex; align-items:center; justify-content:center; font-family:'Segoe UI',sans-serif; }
         .auth-card { width:100%; max-width:420px; padding:1rem; }

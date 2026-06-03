@@ -1,4 +1,4 @@
-﻿@extends('layouts.app')
+@extends('layouts.app')
 @section('title', 'Editar Categoria')
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('categorias.index') }}">Categorias</a></li>

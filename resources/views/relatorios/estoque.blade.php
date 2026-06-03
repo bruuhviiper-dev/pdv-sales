@@ -1,4 +1,4 @@
-﻿@extends('layouts.app')
+@extends('layouts.app')
 @section('title', 'Inventário de Estoque')
 @section('breadcrumb')
     <li class="breadcrumb-item"><a href="{{ route('relatorios.index') }}">Relatórios</a></li>

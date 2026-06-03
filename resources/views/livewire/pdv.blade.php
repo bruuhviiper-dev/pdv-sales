@@ -1,4 +1,4 @@
-﻿<div>
+<div>
     @if(!$caixaAberto)
     <div class="alert alert-warning d-flex align-items-center gap-3 mb-4">
         <i class="ti ti-alert-triangle-filled fs-4"></i>
