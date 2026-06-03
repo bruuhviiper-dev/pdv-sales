@@ -1,0 +1,60 @@
+═══════════════════════════════════════════════════════════
+  SISTEMA PDV — GUIA DE ATUALIZAÇÃO
+═══════════════════════════════════════════════════════════
+
+ANTES DE ATUALIZAR:
+───────────────────
+  ⚠️ FAÇA BACKUP DO BANCO DE DADOS ANTES DE QUALQUER ATUALIZAÇÃO!
+
+  Para fazer backup via phpMyAdmin:
+  1. Acesse phpMyAdmin
+  2. Selecione o banco "sistema_pdv"
+  3. Clique em "Exportar" → "Executar"
+  4. Salve o arquivo .sql gerado
+
+  Para fazer backup via terminal:
+  mysqldump -u root -p sistema_pdv > backup_$(date +%Y%m%d).sql
+
+
+ATUALIZAÇÃO EM HOSPEDAGEM COMPARTILHADA:
+─────────────────────────────────────────
+  1. Faça download do novo arquivo ZIP
+  2. Extraia o conteúdo
+  3. ANTES do upload, faça backup do seu .env atual
+  4. Faça upload dos novos arquivos via FTP (substituir os existentes)
+  5. NÃO substitua o arquivo .env (mantenha o seu)
+  6. Acesse o painel e execute via SSH (se disponível):
+        php artisan migrate --force
+  7. Limpe o cache:
+        php artisan cache:clear
+        php artisan config:clear
+
+
+ATUALIZAÇÃO LOCAL (LARAGON/XAMPP):
+───────────────────────────────────
+  1. Faça backup do .env e do banco de dados
+  2. Substitua os arquivos (exceto o .env)
+  3. No terminal, execute:
+        composer install --no-dev
+        php artisan migrate --force
+        php artisan cache:clear
+        php artisan config:clear
+
+
+HISTÓRICO DE VERSÕES:
+─────────────────────
+  v1.0.0 (2024) — Versão inicial
+    → PDV com suporte a 5 formas de pagamento
+    → Dashboard com gráficos
+    → Controle de estoque com alertas
+    → Módulo financeiro (contas a pagar/receber)
+    → Relatórios de vendas e produtos
+    → Sistema de usuários com 3 perfis
+    → Instalador web (install.php)
+
+
+SUPORTE:
+────────
+  Dúvidas sobre atualização? Entre em contato pelo Mercado Livre.
+
+═══════════════════════════════════════════════════════════

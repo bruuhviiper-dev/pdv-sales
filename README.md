@@ -1,153 +1,113 @@
-# Pinnacle — Modern Business & Agency HTML5 Template
+# Sistema PDV + Gestão Comercial
 
-![Version](https://img.shields.io/badge/version-1.0.0-5b3df5)
-![License](https://img.shields.io/badge/license-MIT-success)
-![Made with](https://img.shields.io/badge/made%20with-HTML5%20%7C%20CSS3%20%7C%20Vanilla%20JS-ff5c8a)
+Sistema completo de ponto de venda e gestão comercial desenvolvido em Laravel 11. Pronto para pequenos comércios: mercadinhos, lojas, papelarias, padarias e qualquer tipo de negócio.
 
-**Pinnacle** is a modern, fully responsive, **mobile-first** one-page HTML5
-template for businesses, agencies, startups and freelancers. It is built with
-**semantic HTML5, pure CSS3 and vanilla JavaScript** — no heavy frameworks, no
-build step, no dependencies. Just open and edit.
+## Módulos Incluídos
 
----
+- **PDV (Frente de Caixa)** — Vendas em tempo real com Livewire, 5 formas de pagamento, troco automático
+- **Dashboard** — Gráficos de vendas (Chart.js), receita do dia/mês, alertas de estoque crítico
+- **Produtos** — Cadastro com foto, código de barras, margens de lucro automáticas
+- **Estoque** — Entrada/saída, histórico de movimentações, alertas de mínimo
+- **Clientes** — Cadastro, histórico de compras, controle de fiado
+- **Financeiro** — Contas a pagar/receber, fechamento de caixa
+- **Relatórios** — Vendas por período, produtos mais vendidos, inventário
+- **Configurações** — Dados da empresa, usuários com 3 perfis de acesso
 
-## ✨ Features
+## Stack Tecnológica
 
-- 📱 **Mobile-first & fully responsive** — looks great from 320px to 4K
-- 🎨 **Modern design** — clean layout, gradient accents, smooth micro-interactions
-- ⚡ **Zero dependencies** — no jQuery, no Bootstrap, no build tools
-- 🍔 **Animated hamburger menu** with off-canvas drawer & overlay
-- 🪄 **Smooth scrolling** + scroll-spy active link highlighting
-- 🎬 **Scroll-reveal animations** powered by `IntersectionObserver`
-- 🔢 **Animated stat counters**
-- 🗂️ **Filterable portfolio** gallery
-- 💬 **Auto-playing testimonials slider** (pause on hover, dots + arrows)
-- ✅ **Client-side form validation** (contact + newsletter)
-- ⬆️ **Back-to-top** button
-- ♿ **Accessible** — ARIA attributes, keyboard support, `prefers-reduced-motion`
-- 🔍 **SEO-ready** — meta tags, Open Graph, semantic structure
-- 🧩 **Well-commented, organized code** — easy to customize
+| Tecnologia | Versão | Uso |
+|-----------|--------|-----|
+| Laravel | 11.x | Framework PHP |
+| PHP | 8.2+ | Backend |
+| MySQL | 5.7+ | Banco de dados |
+| Bootstrap | 5.3 | Interface (CDN) |
+| Livewire | 3.x | PDV em tempo real |
+| Chart.js | 4.x | Gráficos do dashboard |
+| Spatie Permission | 6.x | Controle de acesso |
 
----
+## Requisitos
 
-## 📂 Folder Structure
+- PHP 8.2 ou superior
+- Composer 2.x
+- MySQL 5.7 ou superior
+- Node.js (apenas para compilar assets em desenvolvimento)
 
-```
-template-monster-1/
-├── index.html              # Main page (all sections)
-├── README.md               # This file
-├── LICENSE                 # MIT license
-└── assets/
-    ├── css/
-    │   └── style.css       # All styles (organized with a table of contents)
-    ├── js/
-    │   └── main.js         # All scripts (one module per feature)
-    └── images/
-        ├── favicon.svg     # Site favicon
-        └── og-image.svg    # Social-share preview image
-```
-
-This structure follows the conventions used by TemplateMonster HTML packages:
-a single entry `index.html`, an `assets/` directory split into `css/`, `js/`
-and `images/`, and documentation at the root.
-
----
-
-## 🚀 Getting Started
-
-No installation or build step is required.
-
-### Option 1 — Open directly
-Double-click `index.html` to open it in your browser.
-
-### Option 2 — Run a local server (recommended)
-Some browser features behave best over HTTP. Pick whichever you have:
+## Instalação para Desenvolvimento
 
 ```bash
-# Python 3
-python -m http.server 8000
+# Clone o repositório
+git clone https://github.com/bruuhviiper-dev/template-monster-1.git sistema-pdv
+cd sistema-pdv
 
-# Node.js (npx)
-npx serve
+# Instale as dependências
+composer install
 
-# PHP
-php -S localhost:8000
+# Configure o ambiente
+cp .env.example .env
+php artisan key:generate
+
+# Configure o banco no .env (DB_DATABASE, DB_USERNAME, DB_PASSWORD)
+
+# Execute as migrations com dados de exemplo
+php artisan migrate --seed
+
+# Inicie o servidor
+php artisan serve
 ```
 
-Then visit <http://localhost:8000>.
+Acesse: http://localhost:8000
 
----
+**Login padrão:** `admin@admin.com` / `admin123`
 
-## 🎨 Customization
+## Usuários Padrão
 
-### Colors & fonts
-All design tokens live at the top of `assets/css/style.css` under
-**`01. DESIGN TOKENS`**. Change a value once and it updates everywhere:
+| Usuário | E-mail | Senha | Permissões |
+|---------|--------|-------|-----------|
+| Administrador | admin@admin.com | admin123 | Total |
+| Operador de Caixa | operador@sistema.com | operador123 | PDV, Caixa |
+| Estoquista | estoque@sistema.com | estoque123 | Produtos, Estoque |
 
-```css
-:root {
-  --c-primary: #5b3df5;   /* brand color */
-  --c-accent:  #ff5c8a;   /* secondary accent */
-  --c-ink:     #14122b;   /* headings */
-  --font-head: 'Plus Jakarta Sans', sans-serif;
-  --font-body: 'Inter', sans-serif;
-}
+## Screenshots
+
+> Screenshots do sistema em funcionamento:
+>
+> 1. `docs/screenshots/dashboard.png` — Dashboard com gráficos
+> 2. `docs/screenshots/pdv.png` — Tela do PDV
+> 3. `docs/screenshots/produtos.png` — Lista de produtos
+> 4. `docs/screenshots/relatorios.png` — Relatórios
+
+## Instalação em Hospedagem
+
+Consulte o arquivo `INSTALAR.txt` para instruções detalhadas de instalação em hospedagem compartilhada (Hostinger, Locaweb, etc.).
+
+O sistema inclui um **instalador web** (`install.php`) que guia o usuário por toda a configuração sem necessidade de terminal.
+
+## Estrutura do Projeto
+
+```
+sistema-pdv/
+├── app/
+│   ├── Http/Controllers/    # Controllers dos módulos
+│   ├── Livewire/Pdv.php     # Componente PDV em tempo real
+│   └── Models/              # Modelos Eloquent
+├── database/
+│   ├── migrations/          # Estrutura do banco
+│   └── seeders/             # Dados de exemplo
+├── resources/views/         # Templates Blade
+│   ├── layouts/app.blade.php
+│   ├── pdv/, produtos/, clientes/...
+├── routes/web.php           # Rotas da aplicação
+├── install.php              # Instalador web
+├── INSTALAR.txt             # Guia hospedagem
+├── INSTALAR-LOCALHOST.txt   # Guia local
+└── documentacao/            # Manual do usuário
 ```
 
-### Sections
-Each section in `index.html` is clearly delimited by a comment banner
-(`HERO`, `ABOUT`, `SERVICES`, `PORTFOLIO`, `PRICING`, `TESTIMONIALS`,
-`CONTACT`, `FOOTER`). Edit the text/markup inside and you're done.
+## Licença
 
-### Images
-The demo uses CSS gradients as lightweight placeholders so the template works
-offline. To use real photos, replace the `.about__image` and
-`.portfolio__thumb--*` backgrounds in `style.css`, or drop `<img>` tags into the
-markup and point them at files in `assets/images/`.
-
-### Contact form
-The form is validated on the client but has **no backend**. To make it send
-email, point the `<form>` `action` at your endpoint (e.g. Formspree, Netlify
-Forms, or your own API) and remove the `e.preventDefault()` demo handling in
-`initForms()` inside `assets/js/main.js`.
+Licença Comercial — para uso em projetos próprios ou de clientes.
+Redistribuição ou revenda do código fonte não é permitida sem autorização.
 
 ---
 
-## 📑 Sections Included
-
-| Section       | Description                                            |
-|---------------|--------------------------------------------------------|
-| Hero          | Headline, sub-copy, CTAs and animated stat counters    |
-| About         | Story, checklist of strengths and experience badge     |
-| Services      | Six icon cards describing your offerings                |
-| Portfolio     | Filterable project gallery (All / Web / Branding / App) |
-| Pricing       | Three-tier plan table with a highlighted "Pro" plan     |
-| Testimonials  | Auto-playing slider with client quotes                  |
-| Contact       | Contact details + validated message form                |
-| Footer        | Link columns, newsletter signup and social icons        |
-
----
-
-## 🌐 Browser Support
-
-Works in all modern browsers (Chrome, Firefox, Safari, Edge). Graceful
-fallbacks are provided where `IntersectionObserver` is unavailable.
-
----
-
-## ✅ Validation
-
-- **HTML** — valid HTML5 (W3C Markup Validation Service)
-- **CSS** — valid CSS3
-- Tested for responsiveness across mobile, tablet and desktop breakpoints
-  (320px / 375px / 768px / 1024px / 1440px).
-
----
-
-## 📄 License
-
-Released under the [MIT License](LICENSE). Free for personal and commercial use.
-
----
-
-Made with ❤️ &nbsp;— **Pinnacle** Template.
+*Desenvolvido com Laravel 11 | Bootstrap 5 | Livewire 3*

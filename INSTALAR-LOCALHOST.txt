@@ -1,0 +1,84 @@
+═══════════════════════════════════════════════════════════
+  SISTEMA PDV — INSTALAÇÃO LOCAL (LARAGON / XAMPP)
+═══════════════════════════════════════════════════════════
+
+PRÉ-REQUISITOS:
+  ✓ PHP 8.2+ com Composer instalado
+  ✓ MySQL rodando (Laragon, XAMPP ou similar)
+  ✓ Node.js (opcional — apenas para compilar assets)
+
+
+PASSO A PASSO:
+──────────────
+
+  1. COPIE A PASTA DO SISTEMA
+     → Laragon: copie para C:\laragon\www\sistema-pdv\
+     → XAMPP:   copie para C:\xampp\htdocs\sistema-pdv\
+
+  2. CRIE O BANCO DE DADOS
+     → Abra phpMyAdmin: http://localhost/phpmyadmin
+     → Crie um banco chamado: sistema_pdv
+     → Clique em "Novo" → Digite "sistema_pdv" → Clique "Criar"
+
+  3. CONFIGURE O .ENV
+     → Abra a pasta do sistema no terminal
+     → Copie o arquivo de exemplo:
+          copy .env.example .env   (Windows)
+          cp .env.example .env     (Linux/Mac)
+     → Abra o .env com um editor de texto
+     → Configure as linhas do banco:
+          DB_CONNECTION=mysql
+          DB_HOST=127.0.0.1
+          DB_PORT=3306
+          DB_DATABASE=sistema_pdv
+          DB_USERNAME=root
+          DB_PASSWORD=           ← sua senha do MySQL (ou deixe vazio)
+
+  4. INSTALE AS DEPENDÊNCIAS
+     → Abra o terminal na pasta do sistema
+     → Execute:
+          composer install
+          php artisan key:generate
+
+  5. CRIE AS TABELAS E DADOS
+     → No terminal, execute:
+          php artisan migrate --seed
+
+  6. INICIE O SERVIDOR
+     → No terminal, execute:
+          php artisan serve
+
+     → Acesse no navegador: http://localhost:8000
+
+
+CREDENCIAIS DE ACESSO:
+──────────────────────
+  URL:      http://localhost:8000/login
+  Admin:    admin@admin.com     / admin123
+  Operador: operador@sistema.com / operador123
+  Estoque:  estoque@sistema.com  / estoque123
+
+
+USANDO LARAGON (mais fácil):
+────────────────────────────
+  1. Copie a pasta para C:\laragon\www\pdv\
+  2. No Laragon, clique em "Database" → crie o banco "sistema_pdv"
+  3. Configure o .env conforme o item 3 acima
+  4. Acesse o terminal na pasta e execute: composer install
+  5. Execute: php artisan key:generate && php artisan migrate --seed
+  6. Acesse: http://pdv.test (se tiver Laragon configurado)
+     OU:     http://localhost:8000 (com php artisan serve)
+
+
+COMANDOS ÚTEIS:
+───────────────
+  # Recriar banco do zero:
+  php artisan migrate:fresh --seed
+
+  # Limpar cache:
+  php artisan cache:clear && php artisan config:clear
+
+  # Ver logs de erro:
+  tail -f storage/logs/laravel.log
+
+═══════════════════════════════════════════════════════════

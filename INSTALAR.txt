@@ -1,0 +1,69 @@
+═══════════════════════════════════════════════════════════
+  SISTEMA PDV — INSTALAÇÃO EM HOSPEDAGEM COMPARTILHADA
+═══════════════════════════════════════════════════════════
+
+REQUISITOS MÍNIMOS:
+  ✓ PHP 8.2 ou superior
+  ✓ MySQL 5.7 ou superior
+  ✓ Extensões: pdo_mysql, mbstring, openssl, tokenizer
+  ✓ Funciona em: Hostinger, Locaweb, Kinghost, HostGator, etc.
+
+
+INSTALAÇÃO EM 5 PASSOS:
+────────────────────────
+
+  1. UPLOAD DOS ARQUIVOS
+     → Acesse o Gerenciador de Arquivos ou use FTP (FileZilla)
+     → Faça upload de TODOS os arquivos para a pasta public_html
+     → Certifique-se que a pasta "public" está dentro do public_html
+
+  2. BANCO DE DADOS
+     → No painel da hospedagem (cPanel), vá em "Bancos de Dados MySQL"
+     → Crie um novo banco de dados (ex: usuario_pdv)
+     → Crie um usuário MySQL e vincule ao banco
+     → Anote: nome do banco, usuário e senha
+
+  3. EXECUTE O INSTALADOR
+     → Abra seu navegador
+     → Acesse: https://seudominio.com.br/install.php
+     → Siga o assistente de instalação (menos de 5 minutos)
+
+  4. CONFIGURE O BANCO
+     → Na etapa do instalador, informe:
+        Host: localhost (ou conforme informado pela hospedagem)
+        Nome do Banco: o banco que você criou
+        Usuário: o usuário MySQL que você criou
+        Senha: a senha do usuário
+
+  5. ACESSE O SISTEMA
+     → Após instalar, acesse: https://seudominio.com.br/login
+     → Login padrão: admin@admin.com
+     → Senha padrão: admin123
+     → IMPORTANTE: Troque a senha após o primeiro acesso!
+
+
+CREDENCIAIS PADRÃO:
+───────────────────
+  Administrador:  admin@admin.com      / admin123
+  Operador Caixa: operador@sistema.com / operador123
+  Estoquista:     estoque@sistema.com  / estoque123
+
+
+PROBLEMAS COMUNS:
+─────────────────
+  ❌ Erro 500 → Verifique as permissões das pastas:
+     storage/ e bootstrap/cache/ devem ter permissão 755 ou 777
+
+  ❌ Erro de banco → Confirme os dados no painel da hospedagem.
+     Algumas hospedagens usam "localhost" outras usam "127.0.0.1"
+
+  ❌ Página em branco → Ative o mod_rewrite no servidor Apache
+     (a maioria das hospedagens já tem ativo)
+
+
+SUPORTE:
+────────
+  Em caso de dúvidas, entre em contato pelo Mercado Livre.
+  Respondemos em até 24 horas úteis.
+
+═══════════════════════════════════════════════════════════
