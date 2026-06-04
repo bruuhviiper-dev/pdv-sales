@@ -32,6 +32,11 @@
                             <input type="text" name="empresa_cnpj" value="{{ $configs->get('empresa_cnpj')?->valor }}" class="form-control" placeholder="00.000.000/0000-00">
                         </div>
                         <div class="col-md-6">
+                            <label class="form-label">Inscrição Estadual (IE)</label>
+                            <input type="text" name="empresa_ie" value="{{ $configs->get('empresa_ie')?->valor }}" class="form-control" placeholder="ISENTO ou número da IE">
+                            <div class="form-text">Obrigatória para emitir NFC-e.</div>
+                        </div>
+                        <div class="col-md-6">
                             <label class="form-label">Telefone / WhatsApp</label>
                             <input type="text" name="empresa_telefone" value="{{ $configs->get('empresa_telefone')?->valor }}" class="form-control" placeholder="(00) 00000-0000">
                         </div>
@@ -122,6 +127,24 @@
                         <div class="col-md-4">
                             <label class="form-label">Token da API</label>
                             <input type="password" name="nfce_token" value="{{ $configs->get('nfce_token')?->valor }}" class="form-control" placeholder="Token do provedor">
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="form-label">Série da NFC-e</label>
+                            <input type="text" name="nfce_serie" value="{{ $configs->get('nfce_serie')?->valor }}" class="form-control" placeholder="ex.: 1">
+                        </div>
+                        <div class="col-md-5">
+                            <label class="form-label">CSC (Código de Segurança)</label>
+                            <input type="password" name="nfce_csc" value="{{ $configs->get('nfce_csc')?->valor }}" class="form-control" placeholder="gerado no portal da SEFAZ">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">ID do CSC (idToken)</label>
+                            <input type="text" name="nfce_csc_id" value="{{ $configs->get('nfce_csc_id')?->valor }}" class="form-control" placeholder="ex.: 000001">
+                        </div>
+                        <div class="col-12">
+                            <div class="alert alert-light border small mb-0 py-2">
+                                <i class="ti ti-info-circle me-1"></i>Usando <strong>Focus NFe</strong>: o <strong>certificado A1</strong>, o <strong>CSC</strong> e a <strong>Inscrição Estadual</strong> também precisam ser cadastrados no painel da Focus (por empresa). Os campos acima ficam guardados aqui para referência e para a <strong>série</strong> ser enviada na emissão.
+                            </div>
                         </div>
 
                         <div class="col-12">

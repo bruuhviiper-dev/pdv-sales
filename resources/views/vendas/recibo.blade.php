@@ -1,6 +1,7 @@
 @php
     $nome   = \App\Models\Configuracao::get('empresa_nome', 'Sistema PDV');
     $cnpj   = \App\Models\Configuracao::get('empresa_cnpj');
+    $ie     = \App\Models\Configuracao::get('empresa_ie');
     $tel    = \App\Models\Configuracao::get('empresa_telefone');
     $end    = \App\Models\Configuracao::get('empresa_endereco');
     $cidade = \App\Models\Configuracao::get('empresa_cidade');
@@ -133,8 +134,8 @@
     <a href="{{ route('pdv.index') }}" class="btn btn-dark" id="btnVoltarPdv">
         <i class="ti ti-arrow-back-up me-1"></i>Voltar ao Caixa
     </a>
-    <a href="{{ route('vendas.show', $venda) }}" class="btn btn-outline-secondary" title="Detalhes da venda">
-        <i class="ti ti-list-details"></i>
+    <a href="{{ route('vendas.show', $venda) }}" class="btn btn-outline-secondary">
+        <i class="ti ti-list-details me-1"></i>Detalhes da venda
     </a>
 </div>
 
@@ -146,6 +147,7 @@
         @endif
         <h2 class="r-nome">{{ $nome }}</h2>
         @if($cnpj)<div class="r-sub">CNPJ: {{ $cnpj }}</div>@endif
+        @if($ie)<div class="r-sub">IE: {{ $ie }}</div>@endif
         @if($end)<div class="r-sub">{{ $end }}</div>@endif
         @if($cidade)<div class="r-sub">{{ $cidade }}</div>@endif
         @if($tel)<div class="r-sub">Tel: {{ $tel }}</div>@endif

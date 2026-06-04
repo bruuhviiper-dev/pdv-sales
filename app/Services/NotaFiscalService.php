@@ -68,7 +68,8 @@ class NotaFiscalService
     public static function pendencias(): array
     {
         $p = [];
-        if (empty(Configuracao::get('empresa_cnpj')))  $p[] = 'Informe o CNPJ da empresa (Dados da Empresa).';
+        if (empty(Configuracao::get('empresa_cnpj')))   $p[] = 'Informe o CNPJ da empresa (Dados da Empresa).';
+        if (empty(Configuracao::get('empresa_ie')))     $p[] = 'Informe a Inscrição Estadual (IE) da empresa.';
         if (empty(Configuracao::get('empresa_cidade'))) $p[] = 'Informe a cidade da empresa.';
         if (empty(Configuracao::get('empresa_estado'))) $p[] = 'Informe o estado (UF) da empresa.';
         if (!self::configurado())                       $p[] = 'Informe o token da API do provedor.';
@@ -103,6 +104,9 @@ class NotaFiscalService
             'presenca_comprador'   => '1', // operação presencial
             'modalidade_frete'     => '9',
             'local_destino'        => '1',
+            // Série da NFC-e (opcional). Se vazia, a Focus usa a série padrão
+            // configurada para a empresa no painel dela.
+            'serie' => Configuracao::get('nfce_serie') ?: null,
             'itens'                => $venda->itens->values()->map(function ($item, $i) use ($defCfop, $defSit, $defOrigem, $defNcm) {
                 $p   = $item->produto;
                 $ncm = $p && $p->ncm ? preg_replace('/\D/', '', $p->ncm) : $defNcm;
@@ -133,6 +137,11 @@ class NotaFiscalService
                 'valor_pagamento' => number_format($venda->total, 2, '.', ''),
             ]],
         ];
+
+        // Remove a série se não foi configurada (deixa a Focus usar a padrão da empresa).
+        if (empty($payload['serie'])) {
+            unset($payload['serie']);
+        }
 
         try {
             $resp = Http::withBasicAuth($token, '')

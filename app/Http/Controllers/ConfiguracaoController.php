@@ -27,11 +27,11 @@ class ConfiguracaoController extends Controller
     public function salvar(Request $request)
     {
         $campos = [
-            'empresa_nome', 'empresa_cnpj', 'empresa_telefone', 'empresa_email',
+            'empresa_nome', 'empresa_cnpj', 'empresa_ie', 'empresa_telefone', 'empresa_email',
             'empresa_endereco', 'empresa_cidade', 'empresa_estado', 'empresa_cep',
             'moeda_simbolo', 'recibo_rodape',
             'pix_chave', 'pix_beneficiario', 'pix_cidade',
-            'nfce_provider', 'nfce_token', 'nfce_ambiente',
+            'nfce_provider', 'nfce_token', 'nfce_ambiente', 'nfce_serie', 'nfce_csc', 'nfce_csc_id',
             'nfce_regime', 'fiscal_ncm', 'fiscal_cfop', 'fiscal_situacao', 'fiscal_origem',
         ];
 
