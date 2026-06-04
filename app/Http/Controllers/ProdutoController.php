@@ -62,6 +62,11 @@ class ProdutoController extends Controller
             'controla_estoque' => 'boolean',
             'ativo' => 'boolean',
             'foto' => 'nullable|image|max:2048',
+            'ncm' => 'nullable|digits:8',
+            'cfop' => 'nullable|digits:4',
+            'cest' => 'nullable|digits:7',
+            'origem' => 'nullable|digits:1',
+            'situacao_tributaria' => 'nullable|max:4',
         ]);
 
         if ($request->hasFile('foto')) {
@@ -108,6 +113,11 @@ class ProdutoController extends Controller
             'controla_estoque' => 'boolean',
             'ativo' => 'boolean',
             'foto' => 'nullable|image|max:2048',
+            'ncm' => 'nullable|digits:8',
+            'cfop' => 'nullable|digits:4',
+            'cest' => 'nullable|digits:7',
+            'origem' => 'nullable|digits:1',
+            'situacao_tributaria' => 'nullable|max:4',
         ]);
 
         if ($request->hasFile('foto')) {

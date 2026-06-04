@@ -88,12 +88,13 @@
                         </span>
                     </td>
                     <td class="text-center">
-                        <div class="btn-group btn-group-sm">
-                            <a href="{{ route('vendas.show', $venda) }}" class="btn btn-outline-primary"><i class="ti ti-eye"></i></a>
+                        <div class="acoes-tabela">
+                            <a href="{{ route('vendas.show', $venda) }}" class="btn-acao btn-acao--ver" title="Detalhes"><i class="ti ti-eye"></i></a>
+                            <a href="{{ route('vendas.recibo', $venda) }}" target="_blank" class="btn-acao btn-acao--ok" title="Recibo"><i class="ti ti-receipt"></i></a>
                             @if($venda->status === 'concluida')
                             <form method="POST" action="{{ route('vendas.cancelar', $venda) }}" onsubmit="return confirm('Cancelar esta venda e restaurar o estoque?')">
                                 @csrf @method('PATCH')
-                                <button class="btn btn-outline-danger"><i class="ti ti-x-circle"></i></button>
+                                <button class="btn-acao btn-acao--excluir" title="Cancelar venda"><i class="ti ti-ban"></i></button>
                             </form>
                             @endif
                         </div>

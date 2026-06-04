@@ -78,6 +78,7 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/configuracoes', [ConfiguracaoController::class, 'index'])->name('configuracoes.index');
         Route::post('/configuracoes', [ConfiguracaoController::class, 'salvar'])->name('configuracoes.salvar');
+        Route::post('/configuracoes/testar-nfce', [ConfiguracaoController::class, 'testarNfce'])->name('configuracoes.testar-nfce');
         Route::delete('/configuracoes/logo', [ConfiguracaoController::class, 'removerLogo'])->name('configuracoes.remover-logo');
         Route::get('/usuarios', [ConfiguracaoController::class, 'usuarios'])->name('usuarios.index');
         Route::post('/usuarios', [ConfiguracaoController::class, 'criarUsuario'])->name('usuarios.store');

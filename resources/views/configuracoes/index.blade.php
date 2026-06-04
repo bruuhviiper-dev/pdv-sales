@@ -123,7 +123,65 @@
                             <label class="form-label">Token da API</label>
                             <input type="password" name="nfce_token" value="{{ $configs->get('nfce_token')?->valor }}" class="form-control" placeholder="Token do provedor">
                         </div>
+
+                        <div class="col-12">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" name="nfce_auto" value="1" id="nfce_auto" {{ $configs->get('nfce_auto')?->valor === '1' ? 'checked' : '' }}>
+                                <label class="form-check-label" for="nfce_auto"><strong>Emitir NFC-e automaticamente</strong> ao finalizar cada venda</label>
+                            </div>
+                        </div>
                     </div>
+
+                    <hr class="my-3">
+                    <h6 class="fw-bold mb-1">Padrões fiscais</h6>
+                    <p class="text-muted small mb-3">Usados quando o produto não tiver o dado preenchido. Em caso de dúvida, confirme com seu contador.</p>
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label class="form-label">Regime tributário</label>
+                            <select name="nfce_regime" class="form-select">
+                                @php($reg = $configs->get('nfce_regime')?->valor)
+                                <option value="simples" {{ $reg === 'simples' || !$reg ? 'selected' : '' }}>Simples Nacional (CSOSN)</option>
+                                <option value="normal" {{ $reg === 'normal' ? 'selected' : '' }}>Lucro Presumido/Real (CST)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">CFOP padrão</label>
+                            <input type="text" name="fiscal_cfop" value="{{ $configs->get('fiscal_cfop')?->valor ?? '5102' }}" class="form-control" maxlength="4" placeholder="5102">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Situação Trib. padrão (CST/CSOSN)</label>
+                            <input type="text" name="fiscal_situacao" value="{{ $configs->get('fiscal_situacao')?->valor ?? '102' }}" class="form-control" maxlength="4" placeholder="102">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Origem padrão</label>
+                            <input type="text" name="fiscal_origem" value="{{ $configs->get('fiscal_origem')?->valor ?? '0' }}" class="form-control" maxlength="1" placeholder="0">
+                        </div>
+                        <div class="col-md-8">
+                            <label class="form-label">NCM padrão (fallback)</label>
+                            <input type="text" name="fiscal_ncm" value="{{ $configs->get('fiscal_ncm')?->valor }}" class="form-control" maxlength="8" placeholder="Recomendado definir o NCM real em cada produto">
+                        </div>
+                    </div>
+
+                    <hr class="my-3">
+                    <div class="d-flex flex-wrap gap-2 align-items-center justify-content-between">
+                        <div>
+                            <h6 class="fw-bold mb-1">Prontidão para emitir</h6>
+                            @if(empty($nfcePendencias))
+                                <span class="badge bg-success"><i class="ti ti-circle-check me-1"></i>Tudo pronto para emitir NFC-e</span>
+                                <div class="form-text">Ainda é necessário ter certificado A1 e credenciamento ativos no provedor/SEFAZ.</div>
+                            @else
+                                <span class="badge bg-warning text-dark"><i class="ti ti-alert-triangle me-1"></i>{{ count($nfcePendencias) }} pendência(s)</span>
+                                <ul class="small text-muted mt-2 mb-0 ps-3">
+                                    @foreach($nfcePendencias as $p)<li>{{ $p }}</li>@endforeach
+                                </ul>
+                            @endif
+                        </div>
+                        <button type="submit" formaction="{{ route('configuracoes.testar-nfce') }}" formnovalidate
+                            class="btn btn-outline-primary">
+                            <i class="ti ti-plug-connected me-1"></i>Testar conexão
+                        </button>
+                    </div>
+                    <div class="form-text mt-2"><i class="ti ti-info-circle me-1"></i>Dica: salve o token primeiro, depois teste. Comece em <strong>Homologação</strong>; só mude para <strong>Produção</strong> após validar uma emissão de teste.</div>
                 </div>
             </div>
         </div>

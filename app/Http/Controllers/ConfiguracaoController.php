@@ -14,7 +14,14 @@ class ConfiguracaoController extends Controller
     public function index()
     {
         $configs = Configuracao::all()->keyBy('chave');
-        return view('configuracoes.index', compact('configs'));
+        $nfcePendencias = \App\Services\NotaFiscalService::pendencias();
+        return view('configuracoes.index', compact('configs', 'nfcePendencias'));
+    }
+
+    public function testarNfce()
+    {
+        $r = \App\Services\NotaFiscalService::testarConexao();
+        return back()->with($r['ok'] ? 'success' : 'error', $r['mensagem']);
     }
 
     public function salvar(Request $request)
@@ -25,6 +32,7 @@ class ConfiguracaoController extends Controller
             'moeda_simbolo', 'recibo_rodape',
             'pix_chave', 'pix_beneficiario', 'pix_cidade',
             'nfce_provider', 'nfce_token', 'nfce_ambiente',
+            'nfce_regime', 'fiscal_ncm', 'fiscal_cfop', 'fiscal_situacao', 'fiscal_origem',
         ];
 
         foreach ($campos as $campo) {
@@ -32,6 +40,9 @@ class ConfiguracaoController extends Controller
                 Configuracao::set($campo, $request->get($campo));
             }
         }
+
+        // Emissão automática de NFC-e ao finalizar a venda (checkbox)
+        Configuracao::set('nfce_auto', $request->boolean('nfce_auto') ? '1' : '0');
 
         if ($request->hasFile('empresa_logo')) {
             $request->validate(['empresa_logo' => 'image|max:1024'], [

@@ -35,18 +35,25 @@ INSTALAÇÃO EM 5 PASSOS:
         Usuário: o usuário MySQL que você criou
         Senha: a senha do usuário
 
-  5. ACESSE O SISTEMA
+  5. CRIE SEU ACESSO (no próprio instalador)
+     → No passo "Conta & Loja", informe o NOME DA LOJA e
+       crie SEU e-mail e SENHA de administrador.
+     → Escolha "Loja nova" (vazia) ou "Com dados de exemplo" (teste).
+     → O instalador já configura tudo: chave de segurança,
+       modo produção e o link de imagens. Não precisa editar arquivos.
+
+  6. ACESSE O SISTEMA
      → Após instalar, acesse: https://seudominio.com.br/login
-     → Login padrão: admin@admin.com
-     → Senha padrão: admin123
-     → IMPORTANTE: Troque a senha após o primeiro acesso!
+     → Entre com o e-mail e a senha que VOCÊ criou no passo 5.
+     → Em Configurações: empresa, PIX e (se for emitir nota) NFC-e.
 
 
-CREDENCIAIS PADRÃO:
-───────────────────
-  Administrador:  admin@admin.com      / admin123
-  Operador Caixa: operador@sistema.com / operador123
-  Estoquista:     estoque@sistema.com  / estoque123
+OBSERVAÇÃO SOBRE ACESSO:
+────────────────────────
+  • Não há mais senha padrão — o login é o que você definir na instalação.
+  • No modo "Com dados de exemplo" também são criados usuários de teste
+    (operador@sistema.com / operador123 e estoque@sistema.com / estoque123).
+    Apague-os depois em Usuários. No modo "Loja nova" eles NÃO são criados.
 
 
 PROBLEMAS COMUNS:

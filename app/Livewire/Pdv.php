@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Produto;
+use App\Models\Categoria;
 use App\Models\Cliente;
 use App\Models\Venda;
 use App\Models\VendaItem;
@@ -15,11 +16,12 @@ use Illuminate\Support\Facades\DB;
 class Pdv extends Component
 {
     public string $busca = '';
+    public ?int $categoriaId = null;
     public array $carrinho = [];
     public ?int $clienteId = null;
     public string $formaPagamento = 'dinheiro';
-    public float $desconto = 0;
-    public float $valorPago = 0;
+    public ?float $desconto = 0;
+    public ?float $valorPago = 0;
     public int $parcelas = 1;
     public string $observacoes = '';
     public bool $vendaConcluida = false;
@@ -33,16 +35,63 @@ class Pdv extends Component
             return;
         }
 
-        $this->produtosFiltrados = Produto::where('ativo', true)
+        $resultados = Produto::where('ativo', true)
             ->where('estoque_atual', '>', 0)
             ->where(function ($q) {
                 $q->where('nome', 'like', "%{$this->busca}%")
                   ->orWhere('codigo_barras', $this->busca)
                   ->orWhere('sku', 'like', "%{$this->busca}%");
             })
-            ->limit(8)
+            ->limit(12)
             ->get(['id', 'nome', 'preco_venda', 'estoque_atual', 'codigo_barras', 'unidade'])
             ->toArray();
+
+        // Bipou um código de barras exato? adiciona direto ao carrinho.
+        if (count($resultados) === 1 && $resultados[0]['codigo_barras'] === $this->busca) {
+            $this->adicionarProduto($resultados[0]['id']);
+            $this->produtosFiltrados = [];
+            return;
+        }
+
+        $this->produtosFiltrados = $resultados;
+    }
+
+    public function selecionarCategoria(?int $id): void
+    {
+        $this->categoriaId = $id;
+        $this->busca = '';
+        $this->produtosFiltrados = [];
+    }
+
+    /** Categorias que possuem produtos vendáveis (ativos e com estoque). */
+    #[Computed]
+    public function categorias()
+    {
+        return Categoria::where('ativo', true)
+            ->whereHas('produtos', fn ($q) => $q->where('ativo', true)->where('estoque_atual', '>', 0))
+            ->orderBy('nome')
+            ->get(['id', 'nome', 'cor']);
+    }
+
+    /** Produtos exibidos na grade de toque (resultado da busca ou da categoria selecionada). */
+    #[Computed]
+    public function grade()
+    {
+        $query = Produto::where('ativo', true)->where('estoque_atual', '>', 0);
+
+        if (strlen($this->busca) >= 2) {
+            $query->where(function ($q) {
+                $q->where('nome', 'like', "%{$this->busca}%")
+                  ->orWhere('codigo_barras', $this->busca)
+                  ->orWhere('sku', 'like', "%{$this->busca}%");
+            });
+        } elseif ($this->categoriaId) {
+            $query->where('categoria_id', $this->categoriaId);
+        }
+
+        return $query->orderBy('nome')
+            ->limit(40)
+            ->get(['id', 'nome', 'preco_venda', 'estoque_atual', 'codigo_barras', 'unidade', 'foto']);
     }
 
     public function adicionarProduto(int $produtoId): void
@@ -103,14 +152,14 @@ class Pdv extends Component
     #[Computed]
     public function total(): float
     {
-        return round(max(0, $this->subtotal - $this->desconto), 2);
+        return round(max(0, $this->subtotal - (float) $this->desconto), 2);
     }
 
     #[Computed]
     public function troco(): float
     {
         return $this->formaPagamento === 'dinheiro'
-            ? max(0, round($this->valorPago - $this->total, 2))
+            ? max(0, round((float) $this->valorPago - $this->total, 2))
             : 0;
     }
 
@@ -141,7 +190,7 @@ class Pdv extends Component
             return;
         }
 
-        if ($this->formaPagamento === 'dinheiro' && $this->valorPago < $this->total) {
+        if ($this->formaPagamento === 'dinheiro' && (float) $this->valorPago < $this->total) {
             $this->dispatch('alerta', mensagem: 'Valor pago é insuficiente.');
             return;
         }
@@ -152,10 +201,10 @@ class Pdv extends Component
                 'cliente_id' => $this->clienteId,
                 'user_id' => auth()->id(),
                 'subtotal' => $this->subtotal,
-                'desconto' => $this->desconto,
+                'desconto' => (float) $this->desconto,
                 'total' => $this->total,
                 'forma_pagamento' => $this->formaPagamento,
-                'valor_pago' => $this->formaPagamento === 'dinheiro' ? $this->valorPago : $this->total,
+                'valor_pago' => $this->formaPagamento === 'dinheiro' ? (float) $this->valorPago : $this->total,
                 'troco' => $this->troco,
                 'parcelas' => $this->parcelas,
                 'status' => 'concluida',
@@ -200,11 +249,24 @@ class Pdv extends Component
                 'forma_pagamento' => $venda->formaPagamentoLabel(),
                 'troco' => $venda->troco,
                 'itens' => count($this->carrinho),
+                'nfce_status' => null,
+                'nfce_url' => null,
             ];
         });
 
+        // Emissão automática de NFC-e (fora da transação — chamada de rede)
+        if (\App\Services\NotaFiscalService::configurado() && \App\Models\Configuracao::get('nfce_auto') === '1') {
+            $vendaModel = Venda::with('itens.produto')->find($this->ultimaVenda['id']);
+            $r = \App\Services\NotaFiscalService::emitir($vendaModel);
+            $vendaModel->refresh();
+            $this->ultimaVenda['nfce_status'] = $vendaModel->nfce_status;
+            $this->ultimaVenda['nfce_url']    = $vendaModel->nfce_url;
+            $this->ultimaVenda['nfce_msg']    = $r['mensagem'];
+        }
+
         $this->limparVenda();
         $this->vendaConcluida = true;
+        $this->dispatch('venda-finalizada');
     }
 
     public function limparVenda(): void

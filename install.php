@@ -1,79 +1,144 @@
 <?php
 /**
- * Sistema PDV - Instalador Web
+ * Sistema PDV — Instalador Web
  * Acesse: seudominio.com/install.php
+ *
+ * Robusto para hospedagem compartilhada: não depende de exec()/shell.
+ * Roda migrations e seeders pelo próprio kernel do Laravel.
  */
 
-define('INSTALL_VERSION', '1.0.0');
-$step = isset($_GET['step']) ? (int)$_GET['step'] : 1;
-$error = '';
-$success = '';
+define('INSTALL_VERSION', '2.0.0');
+error_reporting(E_ALL & ~E_DEPRECATED & ~E_NOTICE);
 
-// Passo 2: Testar banco de dados
+$step  = isset($_GET['step']) ? (int) $_GET['step'] : 1;
+$error = '';
+
+/** Sobe o framework para rodar comandos artisan sem shell. */
+function bootKernel(): array
+{
+    require_once __DIR__ . '/vendor/autoload.php';
+    $app = require __DIR__ . '/bootstrap/app.php';
+    $kernel = $app->make(Illuminate\Contracts\Console\Kernel::class);
+    $kernel->bootstrap();
+    return [$app, $kernel];
+}
+
+/* ───────── Passo 2: Banco de dados + configuração do .env ───────── */
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $step === 2) {
     $db_host = trim($_POST['db_host'] ?? '127.0.0.1');
+    $db_port = trim($_POST['db_port'] ?? '3306');
     $db_name = trim($_POST['db_name'] ?? '');
     $db_user = trim($_POST['db_user'] ?? 'root');
     $db_pass = $_POST['db_pass'] ?? '';
 
     try {
-        $pdo = new PDO("mysql:host={$db_host};dbname={$db_name};charset=utf8mb4", $db_user, $db_pass);
+        $pdo = new PDO("mysql:host={$db_host};port={$db_port};dbname={$db_name};charset=utf8mb4", $db_user, $db_pass);
         $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-        // Salvar configurações no .env
         $envPath = __DIR__ . '/.env';
-        $envContent = file_get_contents($envPath . '.example') ?: file_get_contents($envPath);
-        $envContent = preg_replace('/DB_HOST=.*/', "DB_HOST={$db_host}", $envContent);
-        $envContent = preg_replace('/DB_DATABASE=.*/', "DB_DATABASE={$db_name}", $envContent);
-        $envContent = preg_replace('/DB_USERNAME=.*/', "DB_USERNAME={$db_user}", $envContent);
-        $envContent = preg_replace('/DB_PASSWORD=.*/', "DB_PASSWORD={$db_pass}", $envContent);
-        $envContent = preg_replace('/DB_CONNECTION=.*/', "DB_CONNECTION=mysql", $envContent);
-        file_put_contents($envPath, $envContent);
+        $base    = is_file($envPath) ? file_get_contents($envPath) : file_get_contents($envPath . '.example');
+
+        // Banco
+        $base = preg_replace('/^DB_CONNECTION=.*/m', "DB_CONNECTION=mysql", $base);
+        $base = preg_replace('/^DB_HOST=.*/m',       "DB_HOST={$db_host}", $base);
+        $base = preg_replace('/^DB_PORT=.*/m',       "DB_PORT={$db_port}", $base);
+        $base = preg_replace('/^DB_DATABASE=.*/m',   "DB_DATABASE={$db_name}", $base);
+        $base = preg_replace('/^DB_USERNAME=.*/m',   "DB_USERNAME={$db_user}", $base);
+        $base = preg_replace('/^DB_PASSWORD=.*/m',   'DB_PASSWORD="' . $db_pass . '"', $base);
+
+        // App em modo produção
+        $appKey = 'base64:' . base64_encode(random_bytes(32));
+        $scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+        $appUrl = $scheme . '://' . ($_SERVER['HTTP_HOST'] ?? 'localhost');
+        $base = preg_replace('/^APP_KEY=.*/m',   "APP_KEY={$appKey}", $base);
+        $base = preg_replace('/^APP_ENV=.*/m',   "APP_ENV=production", $base);
+        $base = preg_replace('/^APP_DEBUG=.*/m', "APP_DEBUG=false", $base);
+        $base = preg_replace('/^APP_URL=.*/m',   "APP_URL={$appUrl}", $base);
+
+        file_put_contents($envPath, $base);
 
         header('Location: install.php?step=3');
         exit;
-    } catch (PDOException $e) {
-        $error = 'Erro de conexão: ' . $e->getMessage();
+    } catch (Throwable $e) {
+        $error = 'Não foi possível conectar ao banco: ' . $e->getMessage();
     }
 }
 
-// Passo 3: Dados da empresa
+/* ───────── Passo 3: Conta do administrador + dados da loja ───────── */
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $step === 3) {
-    // Executar migrations via artisan
-    $output = [];
-    exec('php artisan migrate --seed --force 2>&1', $output);
-    $migrationOk = stripos(implode(' ', $output), 'error') === false;
+    $empresaNome = trim($_POST['empresa_nome'] ?? 'Minha Loja');
+    $adminNome   = trim($_POST['admin_nome'] ?? 'Administrador');
+    $adminEmail  = trim($_POST['admin_email'] ?? '');
+    $adminSenha  = $_POST['admin_senha'] ?? '';
+    $tipo        = $_POST['tipo'] ?? 'nova'; // nova | demo
 
-    if ($migrationOk) {
-        // Salvar dados da empresa
-        $empresaNome = $_POST['empresa_nome'] ?? 'Minha Loja';
-        $empresaCnpj = $_POST['empresa_cnpj'] ?? '';
-        $empresaTel = $_POST['empresa_telefone'] ?? '';
-
-        header('Location: install.php?step=4');
-        exit;
+    if (!filter_var($adminEmail, FILTER_VALIDATE_EMAIL)) {
+        $error = 'Informe um e-mail válido para o administrador.';
+    } elseif (strlen($adminSenha) < 6) {
+        $error = 'A senha do administrador deve ter pelo menos 6 caracteres.';
     } else {
-        $error = 'Erro ao executar migrations: ' . implode('<br>', $output);
+        try {
+            [$app, $kernel] = bootKernel();
+
+            // Tabelas
+            $kernel->call('migrate', ['--force' => true]);
+
+            // Seeds essenciais sempre; demais só no modo "demo"
+            $kernel->call('db:seed', ['--class' => 'Database\\Seeders\\RolesSeeder', '--force' => true]);
+            $kernel->call('db:seed', ['--class' => 'Database\\Seeders\\UsersSeeder', '--force' => true]);
+            $kernel->call('db:seed', ['--class' => 'Database\\Seeders\\ConfiguracoesSeeder', '--force' => true]);
+
+            if ($tipo === 'demo') {
+                foreach (['CategoriasSeeder','ProdutosSeeder','ClientesSeeder','VendasSeeder','ContasSeeder'] as $s) {
+                    $kernel->call('db:seed', ['--class' => "Database\\Seeders\\{$s}", '--force' => true]);
+                }
+            }
+
+            // Administrador com as credenciais escolhidas
+            $user = \App\Models\User::where('email', 'admin@admin.com')->first();
+            if (!$user) {
+                $user = new \App\Models\User();
+            }
+            $user->name = $adminNome;
+            $user->email = $adminEmail;
+            $user->password = \Illuminate\Support\Facades\Hash::make($adminSenha);
+            $user->email_verified_at = now();
+            $user->save();
+            if (!$user->hasRole('admin')) {
+                $user->assignRole('admin');
+            }
+
+            // Loja nova: remove usuários de demonstração
+            if ($tipo === 'nova') {
+                \App\Models\User::whereIn('email', ['operador@sistema.com', 'estoque@sistema.com'])->delete();
+            }
+
+            // Nome da loja + link de storage (logos/fotos)
+            \App\Models\Configuracao::set('empresa_nome', $empresaNome);
+            try { $kernel->call('storage:link'); } catch (Throwable $e) { /* alguns hosts já têm o link */ }
+
+            $_SESSION_email = $adminEmail; // só p/ exibir
+            header('Location: install.php?step=4&e=' . urlencode($adminEmail));
+            exit;
+        } catch (Throwable $e) {
+            $error = 'Erro ao instalar: ' . $e->getMessage();
+        }
     }
 }
 
-// Passo 5: Finalizar
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && $step === 5) {
-    // Remover o instalador
-    rename(__FILE__, __DIR__ . '/install.php.done');
-    header('Location: /login');
+/* ───────── Passo 4: Finalizar (remover instalador) ───────── */
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && $step === 4) {
+    @rename(__FILE__, __DIR__ . '/install.php.done');
+    header('Location: login');
     exit;
 }
 
-function checkRequirement($check, $name) {
-    $ok = $check;
-    $color = $ok ? 'success' : 'danger';
-    $icon = $ok ? '✓' : '✗';
-    echo "<div class='alert alert-{$color} py-2 mb-2'>{$icon} {$name}</div>";
+function req($ok, $name) {
+    $c = $ok ? 'success' : 'danger';
+    $i = $ok ? '✓' : '✗';
+    echo "<div class='alert alert-{$c} py-2 mb-2'>{$i} {$name}</div>";
     return $ok;
 }
-
-$allOk = true;
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -83,21 +148,23 @@ $allOk = true;
     <title>Sistema PDV — Instalador</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
     <style>
-        body { background: #f1f5f9; font-family: 'Segoe UI', sans-serif; }
-        .installer-card { max-width: 680px; margin: 60px auto; }
-        .step-badge { width: 36px; height: 36px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; }
+        body { background:#f1f5f9; font-family:'Segoe UI',sans-serif; }
+        .installer-card { max-width:680px; margin:48px auto; padding:0 12px; }
+        .step-badge { width:36px; height:36px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-weight:700; }
+        .card { border:0; border-radius:1rem; box-shadow:0 8px 30px rgba(0,0,0,.08); }
+        .card-header { border-radius:1rem 1rem 0 0 !important; }
+        .btn-primary, .bg-primary { background:#6366f1 !important; border-color:#6366f1 !important; }
     </style>
 </head>
 <body>
 <div class="installer-card">
     <div class="text-center mb-4">
-        <h3 class="fw-bold"><i>🏪</i> Sistema PDV</h3>
+        <h3 class="fw-bold">🏪 Sistema PDV</h3>
         <p class="text-muted">Assistente de Instalação v<?= INSTALL_VERSION ?></p>
     </div>
 
-    <!-- Barra de progresso -->
     <div class="d-flex justify-content-between mb-4">
-        <?php foreach ([1=>'Requisitos', 2=>'Banco de Dados', 3=>'Migração', 4=>'Conclusão'] as $s => $label): ?>
+        <?php foreach ([1=>'Requisitos', 2=>'Banco de Dados', 3=>'Conta & Loja', 4=>'Conclusão'] as $s => $label): ?>
         <div class="text-center" style="flex:1">
             <div class="step-badge <?= $step >= $s ? 'bg-primary text-white' : 'bg-light text-muted' ?> mx-auto mb-1"><?= $s ?></div>
             <div class="small <?= $step >= $s ? 'text-primary fw-semibold' : 'text-muted' ?>"><?= $label ?></div>
@@ -109,101 +176,128 @@ $allOk = true;
     <div class="alert alert-danger"><?= $error ?></div>
     <?php endif; ?>
 
-    <div class="card shadow-sm">
-        <?php if ($step === 1): ?>
-        <!-- PASSO 1: Requisitos -->
+    <div class="card">
+        <?php if ($step === 1):
+            $allOk = true;
+            ?>
         <div class="card-header fw-bold">Passo 1 — Verificação de Requisitos</div>
         <div class="card-body">
             <?php
             $checks = [
-                version_compare(PHP_VERSION, '8.2.0', '>=') => 'PHP 8.2+ (atual: ' . PHP_VERSION . ')',
-                extension_loaded('pdo_mysql') => 'Extensão PDO MySQL',
-                extension_loaded('mbstring') => 'Extensão mbstring',
-                extension_loaded('openssl') => 'Extensão OpenSSL',
-                extension_loaded('tokenizer') => 'Extensão Tokenizer',
-                is_writable(__DIR__ . '/storage') => 'Pasta storage/ gravável',
-                is_writable(__DIR__ . '/bootstrap/cache') => 'Pasta bootstrap/cache/ gravável',
-                file_exists(__DIR__ . '/.env') => 'Arquivo .env existe',
+                'PHP 8.2+ (atual: ' . PHP_VERSION . ')' => version_compare(PHP_VERSION, '8.2.0', '>='),
+                'Extensão PDO MySQL'        => extension_loaded('pdo_mysql'),
+                'Extensão mbstring'         => extension_loaded('mbstring'),
+                'Extensão OpenSSL'          => extension_loaded('openssl'),
+                'Extensão Tokenizer'        => extension_loaded('tokenizer'),
+                'Extensão cURL (NFC-e/API)' => extension_loaded('curl'),
+                'Pasta storage/ gravável'         => is_writable(__DIR__ . '/storage'),
+                'Pasta bootstrap/cache/ gravável' => is_writable(__DIR__ . '/bootstrap/cache'),
+                'Dependências instaladas (vendor/)' => is_file(__DIR__ . '/vendor/autoload.php'),
+                'Modelo .env.example presente'      => is_file(__DIR__ . '/.env.example'),
             ];
-            foreach ($checks as $check => $name) {
-                $ok = (bool)$check;
-                if (!$ok) $allOk = false;
-                checkRequirement($ok, $name);
-            }
+            foreach ($checks as $name => $ok) { if (!$ok) $allOk = false; req($ok, $name); }
             ?>
             <?php if ($allOk): ?>
             <a href="install.php?step=2" class="btn btn-primary mt-3 w-100">Próximo →</a>
             <?php else: ?>
-            <div class="alert alert-warning mt-3">Corrija os requisitos acima antes de continuar.</div>
+            <div class="alert alert-warning mt-3">Corrija os itens em vermelho antes de continuar. Em dúvida, fale com o suporte da sua hospedagem.</div>
             <?php endif; ?>
         </div>
 
         <?php elseif ($step === 2): ?>
-        <!-- PASSO 2: Banco de dados -->
-        <div class="card-header fw-bold">Passo 2 — Configuração do Banco de Dados</div>
+        <div class="card-header fw-bold">Passo 2 — Banco de Dados</div>
         <div class="card-body">
-            <p class="text-muted">Insira os dados do banco MySQL. Crie o banco antes de continuar.</p>
+            <p class="text-muted">Crie um banco MySQL no painel da sua hospedagem e informe os dados abaixo. O sistema já configura tudo (chave de segurança, modo produção) automaticamente.</p>
             <form method="POST">
-                <div class="mb-3">
-                    <label class="form-label">Host do Banco de Dados</label>
-                    <input type="text" name="db_host" class="form-control" value="127.0.0.1" required>
-                    <div class="form-text">Geralmente: localhost ou 127.0.0.1</div>
+                <div class="row g-3">
+                    <div class="col-md-8">
+                        <label class="form-label">Host</label>
+                        <input type="text" name="db_host" class="form-control" value="127.0.0.1" required>
+                        <div class="form-text">Geralmente <code>localhost</code> ou <code>127.0.0.1</code>.</div>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label">Porta</label>
+                        <input type="text" name="db_port" class="form-control" value="3306" required>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">Nome do Banco <span class="text-danger">*</span></label>
+                        <input type="text" name="db_name" class="form-control" placeholder="ex.: loja_pdv" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Usuário do Banco <span class="text-danger">*</span></label>
+                        <input type="text" name="db_user" class="form-control" value="root" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Senha do Banco</label>
+                        <input type="password" name="db_pass" class="form-control" placeholder="em branco se não houver">
+                    </div>
                 </div>
-                <div class="mb-3">
-                    <label class="form-label">Nome do Banco de Dados <span class="text-danger">*</span></label>
-                    <input type="text" name="db_name" class="form-control" placeholder="sistema_pdv" required>
-                    <div class="form-text">Crie este banco no phpMyAdmin antes</div>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Usuário do Banco</label>
-                    <input type="text" name="db_user" class="form-control" value="root" required>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Senha do Banco</label>
-                    <input type="password" name="db_pass" class="form-control" placeholder="deixe em branco se não tiver senha">
-                </div>
-                <button type="submit" class="btn btn-primary w-100">Testar e Continuar →</button>
+                <button type="submit" class="btn btn-primary w-100 mt-3">Testar conexão e continuar →</button>
             </form>
         </div>
 
         <?php elseif ($step === 3): ?>
-        <!-- PASSO 3: Migração -->
-        <div class="card-header fw-bold">Passo 3 — Criação das Tabelas</div>
+        <div class="card-header fw-bold">Passo 3 — Conta do Administrador e Loja</div>
         <div class="card-body">
-            <p>O sistema irá criar todas as tabelas e inserir os dados de exemplo.</p>
-            <div class="alert alert-info">
-                <strong>Dados de exemplo incluídos:</strong><br>
-                • 50 produtos de mercearia/papelaria<br>
-                • 10 clientes cadastrados<br>
-                • 30 dias de vendas de demonstração<br>
-                • Usuários: admin, operador, estoquista
-            </div>
+            <p class="text-muted">Defina o acesso do dono e o nome da loja. Estas serão suas credenciais de login.</p>
             <form method="POST">
-                <button type="submit" class="btn btn-success w-100">Instalar Banco de Dados →</button>
+                <div class="row g-3">
+                    <div class="col-12">
+                        <label class="form-label">Nome da Loja <span class="text-danger">*</span></label>
+                        <input type="text" name="empresa_nome" class="form-control" placeholder="ex.: Mercado do Bairro" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Seu Nome <span class="text-danger">*</span></label>
+                        <input type="text" name="admin_nome" class="form-control" value="Administrador" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Seu E-mail (login) <span class="text-danger">*</span></label>
+                        <input type="email" name="admin_email" class="form-control" placeholder="voce@email.com" required>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">Senha de acesso <span class="text-danger">*</span></label>
+                        <input type="password" name="admin_senha" class="form-control" placeholder="mínimo 6 caracteres" minlength="6" required>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label d-block">Como deseja começar?</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="tipo" id="t-nova" value="nova" checked>
+                            <label class="form-check-label" for="t-nova"><strong>Loja nova</strong> — começa vazia, pronta para cadastrar seus produtos (recomendado).</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="tipo" id="t-demo" value="demo">
+                            <label class="form-check-label" for="t-demo"><strong>Com dados de exemplo</strong> — produtos/clientes/vendas fictícios só para testar.</label>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-success w-100 mt-3">Instalar sistema →</button>
+                <div class="text-muted small text-center mt-2">A instalação leva alguns segundos. Não feche a página.</div>
             </form>
         </div>
 
         <?php elseif ($step === 4): ?>
-        <!-- PASSO 4: Conclusão -->
-        <div class="card-header fw-bold bg-success text-white">✓ Instalação Concluída!</div>
+        <div class="card-header fw-bold bg-success text-white">✓ Instalação concluída!</div>
         <div class="card-body text-center">
-            <div style="font-size:4rem">🎉</div>
-            <h4 class="mt-3">Sistema PDV instalado com sucesso!</h4>
-            <div class="alert alert-info mt-4 text-start">
-                <strong>Credenciais de acesso:</strong><br>
-                👤 Admin: <code>admin@admin.com</code> / <code>admin123</code><br>
-                👤 Operador: <code>operador@sistema.com</code> / <code>operador123</code><br>
-                👤 Estoquista: <code>estoque@sistema.com</code> / <code>estoque123</code>
+            <div style="font-size:3.5rem">🎉</div>
+            <h4 class="mt-2">Tudo pronto!</h4>
+            <div class="alert alert-info mt-3 text-start">
+                <strong>Seu acesso:</strong><br>
+                👤 E-mail: <code><?= htmlspecialchars($_GET['e'] ?? 'seu e-mail') ?></code><br>
+                🔑 Senha: a que você definiu agora.
+            </div>
+            <div class="alert alert-warning text-start small">
+                Próximos passos no sistema: <strong>Configurações</strong> → dados da empresa, PIX e NFC-e.
+                Depois abra o <strong>Caixa</strong> e comece a vender no <strong>PDV</strong>.
             </div>
             <form method="POST">
-                <button type="submit" class="btn btn-success btn-lg w-100">
-                    Acessar o Sistema →
-                </button>
+                <button type="submit" class="btn btn-success btn-lg w-100">Acessar o sistema →</button>
             </form>
-            <div class="text-muted small mt-3">O instalador será removido automaticamente por segurança.</div>
+            <div class="text-muted small mt-3">Por segurança, o instalador será desativado automaticamente.</div>
         </div>
         <?php endif; ?>
     </div>
+
+    <div class="text-center text-muted small mt-3">Precisa de ajuda? Acione o suporte.</div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>

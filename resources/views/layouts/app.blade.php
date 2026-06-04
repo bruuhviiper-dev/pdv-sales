@@ -8,25 +8,10 @@
     @include('partials.favicon')
     <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
     <link rel="stylesheet" href="{{ asset('assets/tabler/tabler-icons.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/css/theme.css') }}">
     @livewireStyles
     <style>
-        :root {
-            --sidebar-w: 260px;
-            --sidebar-collapsed-w: 68px;
-            --sidebar-bg: #0f172a;
-            --sidebar-hover: rgba(255,255,255,.07);
-            --sidebar-active: rgba(99,102,241,.25);
-            --sidebar-active-border: #6366f1;
-            --topbar-h: 58px;
-            --transition: .25s cubic-bezier(.4,0,.2,1);
-        }
-        * { box-sizing: border-box; }
-        body {
-            background: #f1f5f9;
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            font-size: .9rem;
-            margin: 0;
-        }
+        /* Tokens (:root), body e componentes base ficam em assets/css/theme.css */
 
         /* ─── SIDEBAR ─── */
         .sidebar {
@@ -223,18 +208,8 @@
         /* Page content */
         .page-content { padding: 1.5rem; }
 
-        /* Cards */
-        .card { border: 1px solid #e2e8f0; border-radius: .75rem; box-shadow: 0 1px 3px rgba(0,0,0,.04); }
-        .card-header { background: #fff; border-bottom: 1px solid #e2e8f0; font-weight: 600; padding: .85rem 1.25rem; border-radius: .75rem .75rem 0 0 !important; }
+        /* stat-card (específico do dashboard) — base de card/btn/form vem do theme.css */
         .stat-card .icon { width: 44px; height: 44px; border-radius: .6rem; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
-        .table th { font-weight: 600; font-size: .78rem; text-transform: uppercase; letter-spacing: .04em; color: #64748b; }
-        .badge { font-weight: 500; }
-        .btn { border-radius: .5rem; }
-        .form-control, .form-select { border-radius: .5rem; border-color: #e2e8f0; }
-        .form-control:focus, .form-select:focus { border-color: #6366f1; box-shadow: 0 0 0 3px rgba(99,102,241,.1); }
-        .btn-primary { background: #6366f1; border-color: #6366f1; }
-        .btn-primary:hover { background: #4f46e5; border-color: #4f46e5; }
-        .alert { border-radius: .6rem; }
 
         /* Mobile overlay */
         .sidebar-overlay {
@@ -561,12 +536,20 @@ function closeMobileSidebar() {
     document.getElementById('sidebarOverlay').classList.remove('active');
 }
 
-// ── PWA: registrar service worker + indicador offline ──
+// ── PWA: ativo apenas em produção ──
+@production
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}));
 }
 window.addEventListener('offline', () => document.getElementById('offlineBar')?.classList.remove('d-none'));
 window.addEventListener('online',  () => document.getElementById('offlineBar')?.classList.add('d-none'));
+@else
+// Ambiente local/teste: remove qualquer service worker e cache do PWA de testes anteriores
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then(rs => rs.forEach(r => r.unregister()));
+}
+if (window.caches) { caches.keys().then(ks => ks.forEach(k => caches.delete(k))); }
+@endproduction
 </script>
 @stack('scripts')
 </body>

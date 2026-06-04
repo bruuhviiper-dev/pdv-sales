@@ -93,12 +93,12 @@
                         </span>
                     </td>
                     <td class="text-center">
-                        <div class="btn-group btn-group-sm">
-                            <a href="{{ route('produtos.show', $produto) }}" class="btn btn-outline-primary" title="Detalhes"><i class="ti ti-eye"></i></a>
-                            <a href="{{ route('produtos.edit', $produto) }}" class="btn btn-outline-secondary" title="Editar"><i class="ti ti-pencil"></i></a>
+                        <div class="acoes-tabela">
+                            <a href="{{ route('produtos.show', $produto) }}" class="btn-acao btn-acao--ver" title="Detalhes"><i class="ti ti-eye"></i></a>
+                            <a href="{{ route('produtos.edit', $produto) }}" class="btn-acao btn-acao--editar" title="Editar"><i class="ti ti-pencil"></i></a>
                             <form method="POST" action="{{ route('produtos.destroy', $produto) }}" onsubmit="return confirm('Excluir produto?')">
                                 @csrf @method('DELETE')
-                                <button type="submit" class="btn btn-outline-danger" title="Excluir"><i class="ti ti-trash"></i></button>
+                                <button type="submit" class="btn-acao btn-acao--excluir" title="Excluir"><i class="ti ti-trash"></i></button>
                             </form>
                         </div>
                     </td>

@@ -14,6 +14,7 @@ class Produto extends Model
         'categoria_id', 'nome', 'codigo_barras', 'sku', 'descricao', 'foto',
         'preco_custo', 'preco_venda', 'margem_lucro', 'estoque_atual',
         'estoque_minimo', 'unidade', 'controla_estoque', 'ativo',
+        'ncm', 'cfop', 'cest', 'origem', 'situacao_tributaria',
     ];
 
     protected $casts = [

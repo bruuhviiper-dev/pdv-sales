@@ -1,0 +1,84 @@
+/* ============================================================
+   PDV — Design Tokens & Componentes base (compartilhado)
+   Carregado por layouts/app.blade.php e layouts/pdv.blade.php
+   Centraliza cores/raios/sombras para padronizar todas as telas.
+   ============================================================ */
+:root {
+    /* Marca / acentos */
+    --pdv-primary:        #6366f1;
+    --pdv-primary-hover:  #4f46e5;
+    --pdv-primary-soft:   #eef2ff;
+    --pdv-primary-border: #c7d2fe;
+    --pdv-success:        #16a34a;
+    --pdv-success-hover:  #15803d;
+    --pdv-danger:         #dc2626;
+    --pdv-warning:        #f59e0b;
+
+    /* Superfícies / texto */
+    --pdv-bg:      #f1f5f9;
+    --pdv-surface: #ffffff;
+    --pdv-border:  #e2e8f0;
+    --pdv-muted:   #64748b;
+    --pdv-ink:     #0f172a;
+
+    /* App shell (sidebar / topbar) */
+    --sidebar-w:           260px;
+    --sidebar-collapsed-w: 68px;
+    --sidebar-bg:          #0f172a;
+    --sidebar-hover:       rgba(255,255,255,.07);
+    --sidebar-active:      rgba(99,102,241,.25);
+    --sidebar-active-border: #6366f1;
+    --topbar-h:            58px;
+
+    /* Forma */
+    --pdv-radius:    .75rem;
+    --pdv-radius-sm: .5rem;
+    --pdv-shadow:    0 1px 3px rgba(0,0,0,.04);
+    --pdv-shadow-lg: 0 10px 30px rgba(0,0,0,.12);
+    --transition:    .25s cubic-bezier(.4,0,.2,1);
+}
+
+* { box-sizing: border-box; }
+
+body {
+    background: var(--pdv-bg);
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    font-size: .9rem;
+    margin: 0;
+}
+
+/* ─── Componentes base reutilizáveis (antes duplicados em cada layout) ─── */
+.card        { border: 1px solid var(--pdv-border); border-radius: var(--pdv-radius); box-shadow: var(--pdv-shadow); }
+.card-header { background: var(--pdv-surface); border-bottom: 1px solid var(--pdv-border); font-weight: 600; padding: .85rem 1.25rem; border-radius: var(--pdv-radius) var(--pdv-radius) 0 0 !important; }
+.table th    { font-weight: 600; font-size: .78rem; text-transform: uppercase; letter-spacing: .04em; color: var(--pdv-muted); }
+.badge       { font-weight: 500; }
+.btn         { border-radius: var(--pdv-radius-sm); }
+.form-control, .form-select          { border-radius: var(--pdv-radius-sm); border-color: var(--pdv-border); }
+.form-control:focus, .form-select:focus { border-color: var(--pdv-primary); box-shadow: 0 0 0 3px rgba(99,102,241,.1); }
+.btn-primary       { background: var(--pdv-primary); border-color: var(--pdv-primary); }
+.btn-primary:hover { background: var(--pdv-primary-hover); border-color: var(--pdv-primary-hover); }
+.alert       { border-radius: .6rem; }
+
+/* ─── Botões de ação padronizados (listagens) ───
+   Visual neutro que assume a cor da intenção no hover. Uso:
+   <div class="acoes-tabela">
+       <a class="btn-acao btn-acao--ver"><i class="ti ti-eye"></i></a>
+       <a class="btn-acao btn-acao--editar"><i class="ti ti-pencil"></i></a>
+       <button class="btn-acao btn-acao--excluir"><i class="ti ti-trash"></i></button>
+   </div> */
+.acoes-tabela { display: inline-flex; gap: .35rem; align-items: center; }
+.acoes-tabela form { display: inline-flex; margin: 0; }
+.btn-acao {
+    width: 34px; height: 34px; padding: 0; flex-shrink: 0;
+    display: inline-flex; align-items: center; justify-content: center;
+    border-radius: .55rem; border: 1px solid var(--pdv-border);
+    background: #fff; color: var(--pdv-muted); font-size: 1.05rem;
+    line-height: 1; text-decoration: none; cursor: pointer;
+    transition: transform .12s, box-shadow .12s, background .12s, color .12s, border-color .12s;
+}
+.btn-acao:hover  { transform: translateY(-1px); box-shadow: 0 4px 10px rgba(0,0,0,.08); }
+.btn-acao:active { transform: translateY(0); }
+.btn-acao--ver:hover     { background: var(--pdv-primary-soft); border-color: var(--pdv-primary-border); color: var(--pdv-primary-hover); }
+.btn-acao--editar:hover  { background: #fff7ed; border-color: #fed7aa; color: #c2410c; }
+.btn-acao--excluir:hover { background: #fef2f2; border-color: #fecaca; color: var(--pdv-danger); }
+.btn-acao--ok:hover      { background: #f0fdf4; border-color: #bbf7d0; color: var(--pdv-success); }

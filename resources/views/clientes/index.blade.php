@@ -39,12 +39,12 @@
                     </td>
                     <td class="text-center"><span class="badge {{ $cliente->ativo ? 'bg-success' : 'bg-secondary' }}">{{ $cliente->ativo ? 'Ativo' : 'Inativo' }}</span></td>
                     <td class="text-center">
-                        <div class="btn-group btn-group-sm">
-                            <a href="{{ route('clientes.show', $cliente) }}" class="btn btn-outline-primary"><i class="ti ti-eye"></i></a>
-                            <a href="{{ route('clientes.edit', $cliente) }}" class="btn btn-outline-secondary"><i class="ti ti-pencil"></i></a>
+                        <div class="acoes-tabela">
+                            <a href="{{ route('clientes.show', $cliente) }}" class="btn-acao btn-acao--ver" title="Detalhes"><i class="ti ti-eye"></i></a>
+                            <a href="{{ route('clientes.edit', $cliente) }}" class="btn-acao btn-acao--editar" title="Editar"><i class="ti ti-pencil"></i></a>
                             <form method="POST" action="{{ route('clientes.destroy', $cliente) }}" onsubmit="return confirm('Excluir cliente?')">
                                 @csrf @method('DELETE')
-                                <button class="btn btn-outline-danger"><i class="ti ti-trash"></i></button>
+                                <button class="btn-acao btn-acao--excluir" title="Excluir"><i class="ti ti-trash"></i></button>
                             </form>
                         </div>
                     </td>
